@@ -1,0 +1,199 @@
+/* ==========================================================================
+   Shared project data — consumed by index.html (portfolio), projects.html
+   (filterable grid) and project.html (single project, by ?id=).
+   Text fields carry { nl, en } so the language switch works everywhere.
+   ========================================================================== */
+window.HB_PROJECTS = [
+  {
+    id: "badkamer-utrecht",
+    cat: "badkamers",
+    catLabel: { nl: "Badkamerrenovatie", en: "Bathroom renovation" },
+    title: { nl: "Complete badkamer in Utrecht", en: "Complete bathroom in Utrecht" },
+    location: "Utrecht",
+    cover: "images/projects/bathroom-1.jpg",
+    short: {
+      nl: "Volledige renovatie van leidingwerk tot strak tegelwerk en een inloopdouche met natuurlijke materialen.",
+      en: "Full renovation from plumbing to crisp tiling and a walk-in shower with natural materials."
+    },
+    intro: {
+      nl: "Een gedateerde badkamer uit de jaren negentig werd volledig gestript en opnieuw opgebouwd. De klant wilde meer ruimte, betere ventilatie en een rustige, natuurlijke uitstraling.",
+      en: "A dated nineties bathroom was fully stripped and rebuilt. The client wanted more space, better ventilation and a calm, natural look."
+    },
+    challenge: {
+      nl: "De grootste uitdaging was het herindelen van de ruimte binnen bestaande dragende muren en het vernieuwen van verouderd leidingwerk zonder de onderliggende vloer te beschadigen.",
+      en: "The main challenge was re-planning the space within existing load-bearing walls and renewing aged plumbing without damaging the underlying floor."
+    },
+    result: {
+      nl: "Het resultaat is een ruimere, goed geventileerde badkamer met een rustige uitstraling. Door de slimme herindeling voelt de ruimte aanzienlijk groter en is alles onderhoudsvriendelijk afgewerkt.",
+      en: "The result is a more spacious, well-ventilated bathroom with a calm look. The smart re-planning makes the room feel noticeably larger, and everything is finished to be low-maintenance."
+    },
+    services: { nl: ["Badkamerrenovatie", "Loodgieterswerk", "Tegelwerk", "Elektrawerk"], en: ["Bathroom renovation", "Plumbing", "Tiling", "Electrical work"] },
+    meta: { duration: { nl: "6 weken", en: "6 weeks" }, year: "2025", type: { nl: "Badkamerrenovatie", en: "Bathroom renovation" }, budget: "€ 18.400" },
+    gallery: [
+      { src: "images/projects/bathroom-1.jpg", cap: { nl: "Resultaat: inloopdouche en zwevend meubel", en: "Result: walk-in shower and floating vanity" }, cls: "g-wide" },
+      { src: "images/projects/bathroom-2.jpg", cap: { nl: "Strak tegelwerk", en: "Crisp tiling" }, cls: "g-tall" },
+      { src: "images/projects/bathroom-3.jpg", cap: { nl: "Detail afwerking", en: "Finishing detail" }, cls: "g-half" },
+      { src: "images/projects/bathroom-4.jpg", cap: { nl: "Maatwerk nis", en: "Custom niche" }, cls: "g-half" }
+    ]
+  },
+  {
+    id: "uitbouw-amsterdam",
+    cat: "uitbreidingen",
+    catLabel: { nl: "Uitbreiding", en: "Extension" },
+    title: { nl: "Aanbouw met tuinkamer in Amsterdam", en: "Garden-room extension in Amsterdam" },
+    location: "Amsterdam",
+    cover: "images/projects/extension-2.webp",
+    short: {
+      nl: "Een lichte aanbouw die de keuken verbindt met de tuin en het woonoppervlak met 21 m² vergroot.",
+      en: "A light-filled extension connecting the kitchen to the garden, adding 21 m² of living space."
+    },
+    intro: {
+      nl: "De familie had behoefte aan meer leefruimte en een directe verbinding met de tuin. Wij ontwierpen en realiseerden een aanbouw met grote pui en een vlakke daklijn.",
+      en: "The family needed more living space and a direct connection to the garden. We designed and built an extension with a large glazed facade and a flat roofline."
+    },
+    challenge: {
+      nl: "Het werk moest worden uitgevoerd in een smalle stadstuin met beperkte aanvoer van materiaal, terwijl het gezin in de woning bleef wonen.",
+      en: "The work had to be carried out in a narrow city garden with limited material access, while the family kept living in the house."
+    },
+    result: {
+      nl: "De aanbouw verbindt de keuken nu naadloos met de tuin en zorgt voor een lichte, open leefruimte. De familie won 21 m² aan bruikbaar woonoppervlak, met een energiezuinige en onderhoudsarme afwerking.",
+      en: "The extension now connects the kitchen seamlessly to the garden and creates a bright, open living space. The family gained 21 m² of usable floor area, with an energy-efficient, low-maintenance finish."
+    },
+    services: { nl: ["Uitbreiding", "Structurele wijzigingen", "Kozijnen vervangen", "Isolatiewerkzaamheden"], en: ["Extension", "Structural changes", "Window replacement", "Insulation work"] },
+    meta: { duration: { nl: "11 weken", en: "11 weeks" }, year: "2024", type: { nl: "Uitbreiding", en: "Extension" }, budget: "€ 47.900" },
+    gallery: [
+      { src: "images/projects/extension-2.webp", cap: { nl: "Aanbouw met grote pui", en: "Extension with large glazing" }, cls: "g-wide" },
+      { src: "images/projects/extension-1.jpg", cap: { nl: "Ruwbouwfase", en: "Structural phase" }, cls: "g-tall" },
+      { src: "images/projects/extension-3.jpg", cap: { nl: "Muurdoorbraak", en: "Wall opening" }, cls: "g-half" },
+      { src: "images/projects/living-1.jpg", cap: { nl: "Open leefruimte na afwerking", en: "Open living space after finishing" }, cls: "g-half" }
+    ]
+  },
+  {
+    id: "verbouwing-almere",
+    cat: "verbouwing",
+    catLabel: { nl: "Complete verbouwing", en: "Complete renovation" },
+    title: { nl: "Volledige verbouwing in Almere", en: "Complete renovation in Almere" },
+    location: "Almere",
+    cover: "images/projects/living-1.jpg",
+    short: {
+      nl: "Van indeling tot afwerking: een woning compleet herzien met nieuwe wanden, installaties en een open woonkeuken.",
+      en: "From layout to finish: a home fully reworked with new walls, services and an open kitchen-living area."
+    },
+    intro: {
+      nl: "Een verouderde eengezinswoning werd volledig onder handen genomen. De begane grond werd opnieuw ingedeeld voor een open, lichte leefruimte.",
+      en: "A dated single-family home was fully overhauled. The ground floor was re-planned into an open, bright living space."
+    },
+    challenge: {
+      nl: "Het verwijderen van een dragende wand vroeg om een stalen ligger en zorgvuldige constructieve berekeningen om de bovenverdieping veilig te dragen.",
+      en: "Removing a load-bearing wall required a steel beam and careful structural calculations to safely carry the upper floor."
+    },
+    result: {
+      nl: "De woning is getransformeerd tot een open, lichte gezinswoning. De nieuwe indeling, installaties en afwerking geven het huis een frisse start voor de komende decennia.",
+      en: "The home has been transformed into an open, bright family house. The new layout, services and finish give the property a fresh start for decades to come."
+    },
+    services: { nl: ["Complete verbouwing", "Structurele wijzigingen", "Elektrawerk", "Loodgieterswerk", "Isolatiewerkzaamheden"], en: ["Complete renovation", "Structural changes", "Electrical work", "Plumbing", "Insulation work"] },
+    meta: { duration: { nl: "14 weken", en: "14 weeks" }, year: "2025", type: { nl: "Complete verbouwing", en: "Complete renovation" }, budget: "€ 72.500" },
+    gallery: [
+      { src: "images/projects/living-1.jpg", cap: { nl: "Open woonkeuken", en: "Open kitchen-living area" }, cls: "g-wide" },
+      { src: "images/projects/living-2.png", cap: { nl: "Nieuwe indeling", en: "New layout" }, cls: "g-tall" },
+      { src: "images/projects/extension-4.png", cap: { nl: "Constructiefase", en: "Construction phase" }, cls: "g-half" },
+      { src: "images/projects/bathroom-5.jpg", cap: { nl: "Vernieuwde badkamer", en: "Renewed bathroom" }, cls: "g-half" }
+    ]
+  },
+  {
+    id: "gevel-denhaag",
+    cat: "gevelrenovatie",
+    catLabel: { nl: "Gevelrenovatie", en: "Facade renovation" },
+    title: { nl: "Gevelrenovatie in Den Haag", en: "Facade renovation in The Hague" },
+    location: "South Holland",
+    cover: "images/projects/extension-5.png",
+    short: {
+      nl: "Herstel van metselwerk, nieuw voegwerk en gevelisolatie voor een duurzamere en frissere uitstraling.",
+      en: "Masonry repair, new pointing and facade insulation for a more durable, fresher appearance."
+    },
+    intro: {
+      nl: "De voorgevel van een jaren-dertig woning vertoonde scheuren en verouderd voegwerk. De eigenaar wilde behoud van karakter met een betere isolatiewaarde.",
+      en: "The front facade of a 1930s home showed cracks and aged pointing. The owner wanted to keep its character while improving insulation."
+    },
+    challenge: {
+      nl: "Het matchen van het oorspronkelijke metsel- en voegwerk terwijl moderne isolatie werd toegevoegd, vroeg om vakmanschap en geduld.",
+      en: "Matching the original masonry and pointing while adding modern insulation required craftsmanship and patience."
+    },
+    result: {
+      nl: "De gevel oogt weer strak en verzorgd, met behoud van het oorspronkelijke karakter. Dankzij de toegevoegde isolatie is de woning comfortabeler en zuiniger geworden.",
+      en: "The facade looks crisp and well-kept again, while keeping its original character. Thanks to the added insulation, the home is now more comfortable and more economical."
+    },
+    services: { nl: ["Gevelrenovatie", "Isolatiewerkzaamheden", "Kozijnen vervangen"], en: ["Facade renovation", "Insulation work", "Window replacement"] },
+    meta: { duration: { nl: "5 weken", en: "5 weeks" }, year: "2024", type: { nl: "Gevelrenovatie", en: "Facade renovation" }, budget: "€ 21.300" },
+    gallery: [
+      { src: "images/projects/extension-5.png", cap: { nl: "Gerenoveerde gevel", en: "Renovated facade" }, cls: "g-wide" },
+      { src: "images/projects/extension-6.png", cap: { nl: "Hersteld metselwerk", en: "Repaired masonry" }, cls: "g-tall" },
+      { src: "images/projects/extension-1.jpg", cap: { nl: "Voorbereiding", en: "Preparation" }, cls: "g-half" },
+      { src: "images/projects/extension-3.jpg", cap: { nl: "Detail voegwerk", en: "Pointing detail" }, cls: "g-half" }
+    ]
+  },
+  {
+    id: "badkamer-noordholland",
+    cat: "badkamers",
+    catLabel: { nl: "Badkamerrenovatie", en: "Bathroom renovation" },
+    title: { nl: "Wellness-badkamer in Noord-Holland", en: "Wellness bathroom in North Holland" },
+    location: "North Holland",
+    cover: "images/projects/bathroom-6.jpg",
+    short: {
+      nl: "Een ruime badkamer met vrijstaand bad, dubbele wastafel en vloerverwarming voor extra comfort.",
+      en: "A spacious bathroom with a freestanding bath, double sink and underfloor heating for extra comfort."
+    },
+    intro: {
+      nl: "De klant wilde een hotelgevoel thuis. We combineerden warme tinten, een vrijstaand bad en zorgvuldig verlichtingsplan.",
+      en: "The client wanted a hotel feeling at home. We combined warm tones, a freestanding bath and a careful lighting plan."
+    },
+    challenge: {
+      nl: "Het integreren van vloerverwarming en extra leidingen in een bestaande betonvloer vroeg om nauwkeurige planning.",
+      en: "Integrating underfloor heating and extra piping into an existing concrete floor required precise planning."
+    },
+    result: {
+      nl: "Een serene wellness-badkamer met hotelgevoel: warme materialen, een vrijstaand bad en vloerverwarming voor blijvend comfort. Het verlichtingsplan maakt het beeld 's avonds compleet.",
+      en: "A serene wellness bathroom with a hotel feel: warm materials, a freestanding bath and underfloor heating for lasting comfort. The lighting plan completes the picture in the evening."
+    },
+    services: { nl: ["Badkamerrenovatie", "Loodgieterswerk", "Elektrawerk", "Tegelwerk"], en: ["Bathroom renovation", "Plumbing", "Electrical work", "Tiling"] },
+    meta: { duration: { nl: "7 weken", en: "7 weeks" }, year: "2025", type: { nl: "Badkamerrenovatie", en: "Bathroom renovation" }, budget: "€ 24.700" },
+    gallery: [
+      { src: "images/projects/bathroom-6.jpg", cap: { nl: "Vrijstaand bad", en: "Freestanding bath" }, cls: "g-wide" },
+      { src: "images/projects/bathroom-7.jpg", cap: { nl: "Dubbele wastafel", en: "Double sink" }, cls: "g-tall" },
+      { src: "images/projects/bathroom-2.jpg", cap: { nl: "Tegelwerk detail", en: "Tiling detail" }, cls: "g-half" },
+      { src: "images/projects/bathroom-3.jpg", cap: { nl: "Inloopdouche", en: "Walk-in shower" }, cls: "g-half" }
+    ]
+  },
+  {
+    id: "kozijnen-utrecht-regio",
+    cat: "kozijnen",
+    catLabel: { nl: "Kozijnen vervangen", en: "Window replacement" },
+    title: { nl: "Kozijnen vervangen, regio Utrecht", en: "Window replacement, Utrecht region" },
+    location: "Utrecht regio",
+    cover: "images/projects/extension-4.png",
+    short: {
+      nl: "Vervanging van alle kozijnen door geïsoleerd kunststof met behoud van de oorspronkelijke gevelindeling.",
+      en: "Replacement of all window frames with insulated frames, keeping the original facade layout."
+    },
+    intro: {
+      nl: "Door tochtende en verouderde kozijnen liepen de stookkosten op. De eigenaar koos voor energiezuinige kozijnen met HR++ glas.",
+      en: "Draughty, aged window frames pushed up heating costs. The owner chose energy-efficient frames with HR++ glazing."
+    },
+    challenge: {
+      nl: "Het strak afwerken van de aansluitingen tussen nieuwe kozijnen en bestaand metselwerk, zonder lekkages of koudebruggen.",
+      en: "Neatly finishing the joints between new frames and existing masonry, without leaks or cold bridges."
+    },
+    result: {
+      nl: "Met de nieuwe HR++ kozijnen is de woning merkbaar warmer en stiller, terwijl de oorspronkelijke gevelindeling intact bleef. De stookkosten zijn flink gedaald.",
+      en: "With the new HR++ frames, the home is noticeably warmer and quieter, while the original facade layout stayed intact. Heating costs have dropped considerably."
+    },
+    services: { nl: ["Kozijnen vervangen", "Isolatiewerkzaamheden", "Afwerking"], en: ["Window replacement", "Insulation work", "Finishing"] },
+    meta: { duration: { nl: "3 weken", en: "3 weeks" }, year: "2024", type: { nl: "Kozijnen vervangen", en: "Window replacement" }, budget: "€ 16.800" },
+    gallery: [
+      { src: "images/projects/extension-4.png", cap: { nl: "Nieuwe kozijnen", en: "New window frames" }, cls: "g-wide" },
+      { src: "images/projects/extension-6.png", cap: { nl: "Aansluiting metselwerk", en: "Masonry joint" }, cls: "g-tall" },
+      { src: "images/projects/living-2.png", cap: { nl: "Binnenzijde afgewerkt", en: "Interior finished" }, cls: "g-half" },
+      { src: "images/projects/extension-5.png", cap: { nl: "Geveloverzicht", en: "Facade overview" }, cls: "g-half" }
+    ]
+  }
+];
