@@ -431,19 +431,43 @@
     initTestimonials();   /* rebuild pagination for the new card set */
   }
 
-  /* ---------- review submission form ---------- */
+  /* ---------- review submission dialog ---------- */
   function initReviewForm() {
-    var toggle = $("#rv-toggle"), panel = $("#rv-panel"), form = $("#rv-form");
-    if (!toggle || !panel || !form) return;
+    var openBtn = $("#rv-open"), modal = $("#rv-modal"), form = $("#rv-form");
+    if (!openBtn || !modal || !form) return;
 
-    toggle.addEventListener("click", function () {
-      var open = panel.hasAttribute("hidden");
-      if (open) panel.removeAttribute("hidden"); else panel.setAttribute("hidden", "");
-      toggle.setAttribute("aria-expanded", open ? "true" : "false");
-      if (open) {
-        panel.scrollIntoView({ behavior: "smooth", block: "nearest" });
-        var f = $("input[name=name]", form); if (f) f.focus();
-      }
+    var lastFocus = null;
+
+    function openDialog() {
+      lastFocus = document.activeElement;
+      modal.removeAttribute("hidden");
+      document.body.classList.add("rv-open-lock");
+      var first = $("input[name=name]", form);
+      if (first) first.focus();
+    }
+
+    function closeDialog() {
+      modal.setAttribute("hidden", "");
+      document.body.classList.remove("rv-open-lock");
+      if (lastFocus && lastFocus.focus) lastFocus.focus();
+    }
+
+    openBtn.addEventListener("click", openDialog);
+    $all("[data-rv-close]", modal).forEach(function (b) {
+      b.addEventListener("click", closeDialog);
+    });
+
+    document.addEventListener("keydown", function (e) {
+      if (modal.hasAttribute("hidden")) return;
+      if (e.key === "Escape") { closeDialog(); return; }
+      if (e.key !== "Tab") return;
+      /* Keep focus inside the dialog while it is open. */
+      var f = $all('a[href], button:not([disabled]), input, textarea, select', modal)
+        .filter(function (n) { return n.offsetParent !== null || n === document.activeElement; });
+      if (!f.length) return;
+      var first = f[0], last = f[f.length - 1];
+      if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+      else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
     });
 
     /* star picker */
@@ -508,6 +532,8 @@
             form.reset();
             rating = 5; paintStars();
             if (counter) counter.textContent = "0";
+            /* leave the thank-you on screen for a moment, then step aside */
+            setTimeout(closeDialog, 2600);
           }
         })
         .catch(function () {

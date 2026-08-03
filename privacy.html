@@ -3,9 +3,10 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Project — Herstel &amp; Bouw</title>
-  <meta name="description" content="Een renovatie- of bouwproject van Herstel & Bouw, uitgevoerd met aandacht voor detail, planning en kwaliteit." />
+  <title>Privacybeleid — Herstel &amp; Bouw</title>
+  <meta name="description" content="Privacybeleid van Herstel & Bouw: welke persoonsgegevens wij verzamelen, waarvoor wij ze gebruiken, met wie wij ze delen en welke rechten u heeft onder de AVG." />
   <meta name="theme-color" content="#fbf9f6" />
+  <meta name="robots" content="index, follow" />
   <link rel="icon" href="images/logo.png" />
   <link rel="preload" as="image" href="images/logo-mark.png" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -13,7 +14,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="css/style.css?v=20260803" />
 </head>
-<body data-page="projects">
+<body data-page="legal">
 
   <!-- ===================== PRELOADER ===================== -->
   <div class="preloader" id="preloader" role="status" aria-live="polite" aria-label="Pagina wordt geladen">
@@ -27,6 +28,7 @@
     </div>
   </div>
 
+  <!-- ===================== HEADER ===================== -->
   <header class="navbar">
     <div class="nav-inner">
       <a class="nav-brand" href="index.html" aria-label="Herstel & Bouw home">
@@ -86,132 +88,179 @@
     </div>
   </div>
 
-  <main id="single-project">
-    <!-- CASE HERO -->
-    <section class="case-hero">
+  <main>
+    <!-- ===================== PAGE HERO ===================== -->
+    <section class="page-hero">
+      <div class="page-hero-bg"><img src="images/projects/living-1.jpg" alt="" aria-hidden="true" /></div>
       <div class="container">
-        <nav class="crumbs"><a href="index.html" data-i18n="nav.home">Home</a> / <a href="projects.html" data-i18n="sp.crumbProjects">Projecten</a> / <span id="sp-title">Project</span></nav>
-        <div class="case-hero-grid">
+        <nav class="crumbs"><a href="index.html" data-i18n="nav.home">Home</a> / <span data-i18n="footer.privacy">Privacybeleid</span></nav>
+        <div class="page-hero-grid">
           <div class="reveal">
-            <span class="eyebrow" id="sp-tag">Project</span>
-            <h1 class="display" style="margin-top:1.1rem" id="sp-title-h1"></h1>
+            <span class="eyebrow" data-i18n="legal.eyebrow">Juridisch</span>
+            <h1 class="display" style="margin-top:1rem" data-i18n="footer.privacy">Privacybeleid</h1>
           </div>
-          <div class="case-hero-aside reveal" data-delay="1">
-            <p class="lead" id="sp-short"></p>
-            <a class="btn" href="projects.html"><span data-i18n="sp.viewAll">Bekijk alle projecten</span>
-              <span class="btn-ico"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8h10M9 4l4 4-4 4"/></svg></span></a>
-          </div>
-        </div>
-      </div>
-      <div class="container case-hero-media reveal" data-delay="1">
-        <img id="sp-cover" src="" alt="" />
-        <span class="cover-loc">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s7-6.2 7-11a7 7 0 1 0-14 0c0 4.8 7 11 7 11z"/><circle cx="12" cy="10" r="2.5"/></svg>
-          <span id="sp-location"></span>
-        </span>
-      </div>
-      <div class="container">
-        <div class="proj-meta-strip reveal" id="sp-meta"></div>
-      </div>
-    </section>
-
-    <!-- ABOUT + CHALLENGE -->
-    <section class="section">
-      <div class="container case-rows">
-        <div class="case-row reveal">
-          <div class="case-row-head">
-            <span class="eyebrow" data-i18n="sp.about">Wat voor project was dit?</span>
-            <h2 class="case-h" data-i18n="sp.about">Wat voor project was dit?</h2>
-          </div>
-          <p class="case-body" id="sp-intro"></p>
-        </div>
-        <div class="case-row reveal">
-          <div class="case-row-head">
-            <span class="eyebrow" data-i18n="sp.challenge">De uitdaging</span>
-            <h2 class="case-h" data-i18n="sp.challenge">De uitdaging</h2>
-          </div>
-          <p class="case-body" id="sp-challenge"></p>
+          <p class="lead reveal" data-delay="1" data-i18n="pp.intro">Herstel &amp; Bouw respecteert uw privacy en gaat zorgvuldig om met uw persoonsgegevens. Hieronder leest u welke gegevens wij verzamelen, waarvoor wij ze gebruiken en welke rechten u heeft.</p>
         </div>
       </div>
     </section>
 
-    <!-- SERVICE WE PROVIDED -->
-    <section class="section section--cream">
-      <div class="container">
-        <div class="section-header reveal">
-          <span class="eyebrow" data-i18n="sp.work">Uitgevoerde werkzaamheden</span>
-          <h2 class="h2" data-i18n="sp.work">Uitgevoerde werkzaamheden</h2>
-          <p class="lead" data-i18n="sp.serviceIntro">Een overzicht van de werkzaamheden die wij voor dit project hebben uitgevoerd, van constructie tot afwerking.</p>
-        </div>
-        <ul class="service-chips reveal" id="sp-services" data-delay="1"></ul>
-        <div class="gallery-grid reveal" id="sp-gallery" data-delay="1"></div>
-      </div>
-    </section>
-
-    <!-- OUR APPROACH / PROCESS -->
+    <!-- ===================== DOCUMENT ===================== -->
     <section class="section">
       <div class="container">
-        <div class="section-header reveal">
-          <span class="eyebrow" data-i18n="sp.process">Onze aanpak</span>
-          <h2 class="h2" data-i18n="sp.process">Onze aanpak</h2>
-          <p class="lead" data-i18n="sp.processSub">Elk project volgt hetzelfde heldere traject — zo weet u altijd wat er gebeurt en wat de volgende stap is.</p>
-        </div>
-        <div class="process-grid">
-          <div class="process-media reveal"><img src="images/projects/extension-1.jpg" alt="Bouwteam aan het werk tijdens de uitvoering" loading="lazy" /></div>
-          <ol class="process-steps reveal" data-delay="1">
-            <li class="process-step"><span class="ps-num">01</span><div><h3 data-i18n="sp.proc.1.t">Inspectie &amp; advies</h3><p data-i18n="sp.proc.1.d">We beginnen met een grondige opname van de situatie en bespreken uw wensen, mogelijkheden en budget.</p></div></li>
-            <li class="process-step"><span class="ps-num">02</span><div><h3 data-i18n="sp.proc.2.t">Ontwerp &amp; planning</h3><p data-i18n="sp.proc.2.d">We maken een duidelijk plan, een heldere offerte en een realistische planning, zodat u precies weet wat u kunt verwachten.</p></div></li>
-            <li class="process-step"><span class="ps-num">03</span><div><h3 data-i18n="sp.proc.3.t">Uitvoering</h3><p data-i18n="sp.proc.3.d">Ons team voert het werk vakkundig uit, met nette communicatie en oog voor detail tijdens elke fase.</p></div></li>
-            <li class="process-step"><span class="ps-num">04</span><div><h3 data-i18n="sp.proc.4.t">Afwerking &amp; oplevering</h3><p data-i18n="sp.proc.4.d">We werken alles strak af, ruimen netjes op en leveren het project pas op als u volledig tevreden bent.</p></div></li>
-          </ol>
-        </div>
-      </div>
-    </section>
+        <div class="legal-wrap">
 
-    <!-- PROJECT RESULTS -->
-    <section class="section section--cream">
-      <div class="container case-rows">
-        <div class="case-row reveal">
-          <div class="case-row-head">
-            <span class="eyebrow" data-i18n="sp.results">Het resultaat</span>
-            <h2 class="case-h" data-i18n="sp.results">Het resultaat</h2>
-          </div>
-          <p class="case-body case-body--lead" id="sp-result"></p>
-        </div>
-      </div>
-    </section>
+          <!-- Index -->
+          <aside class="legal-index reveal">
+            <div class="legal-index-title" data-i18n="legal.contents">Inhoud</div>
+            <nav class="legal-index-links" aria-label="Inhoudsopgave privacybeleid">
+              <a href="#pp-1"><i>01</i><span data-i18n="pp.1.h">Inleiding</span></a>
+              <a href="#pp-2"><i>02</i><span data-i18n="pp.2.h">Bedrijfsgegevens</span></a>
+              <a href="#pp-3"><i>03</i><span data-i18n="pp.3.h">Welke gegevens wij verzamelen</span></a>
+              <a href="#pp-4"><i>04</i><span data-i18n="pp.4.h">Hoe wij uw gegevens gebruiken</span></a>
+              <a href="#pp-5"><i>05</i><span data-i18n="pp.5.h">Wettelijke grondslag</span></a>
+              <a href="#pp-6"><i>06</i><span data-i18n="pp.6.h">Delen van gegevens</span></a>
+              <a href="#pp-7"><i>07</i><span data-i18n="pp.7.h">Bewaartermijn</span></a>
+              <a href="#pp-8"><i>08</i><span data-i18n="pp.8.h">Uw rechten</span></a>
+              <a href="#pp-9"><i>09</i><span data-i18n="pp.9.h">Cookies</span></a>
+              <a href="#pp-10"><i>10</i><span data-i18n="pp.10.h">Beveiliging</span></a>
+              <a href="#pp-11"><i>11</i><span data-i18n="pp.11.h">Wijzigingen</span></a>
+              <a href="#pp-12"><i>12</i><span data-i18n="pp.12.h">Contact</span></a>
+            </nav>
+          </aside>
 
-    <!-- CTA -->
-    <section class="section section--tight">
-      <div class="container">
-        <div class="cta-band reveal">
-          <div class="cta-band-bg"><img src="images/projects/living-1.jpg" alt="" aria-hidden="true" /></div>
-          <div class="cta-band-inner">
-            <div class="cta-copy">
-              <h2 class="h2" data-i18n="sp.ctaTitle">Heeft u een vergelijkbaar project?</h2>
-              <p data-i18n="sp.ctaSub">Laat uw gegevens achter en wij nemen contact met u op om uw wensen en mogelijkheden te bespreken.</p>
+          <!-- Document -->
+          <article class="legal-doc reveal" data-delay="1">
+            <p class="legal-updated" data-i18n="legal.updated">Laatst bijgewerkt: 26 juli 2026</p>
+
+            <section class="legal-block" id="pp-1">
+              <h2><span class="n">01</span><span data-i18n="pp.1.h">Inleiding</span></h2>
+              <p data-i18n="pp.1.p">Herstel &amp; Bouw ("wij", "ons" of "onze") respecteert uw privacy en zet zich in voor de bescherming van uw persoonsgegevens. In dit privacybeleid leggen wij uit hoe wij uw informatie verzamelen, gebruiken en beveiligen wanneer u onze website bezoekt of contact met ons opneemt.</p>
+            </section>
+
+            <section class="legal-block" id="pp-2">
+              <h2><span class="n">02</span><span data-i18n="pp.2.h">Bedrijfsgegevens</span></h2>
+              <div class="legal-facts">
+                <div class="legal-fact"><span class="k" data-i18n="legal.company">Bedrijf</span><span class="v">Herstel &amp; Bouw</span></div>
+                <div class="legal-fact"><span class="k" data-i18n="legal.address">Adres</span><span class="v">Lorentzweg 12, 3752 LH Bunschoten-Spakenburg</span></div>
+                <div class="legal-fact"><span class="k" data-i18n="legal.email">E-mail</span><span class="v"><a href="mailto:herstelenbouw@gmail.com">herstelenbouw@gmail.com</a></span></div>
+                <div class="legal-fact"><span class="k" data-i18n="legal.phone">Telefoon</span><span class="v"><a href="tel:+31629481014">+31 6 29 48 10 14</a></span></div>
+                <div class="legal-fact"><span class="k" data-i18n="legal.kvk">KvK</span><span class="v">99698269</span></div>
+                <div class="legal-fact"><span class="k" data-i18n="legal.vat">Btw-nummer</span><span class="v">869096096B01</span></div>
+              </div>
+            </section>
+
+            <section class="legal-block" id="pp-3">
+              <h2><span class="n">03</span><span data-i18n="pp.3.h">Welke gegevens wij verzamelen</span></h2>
+              <p data-i18n="pp.3.p">Wij kunnen de volgende persoonsgegevens verzamelen:</p>
+              <ul class="legal-list">
+                <li data-i18n="pp.3.l1">Naam</li>
+                <li data-i18n="pp.3.l2">E-mailadres</li>
+                <li data-i18n="pp.3.l3">Telefoonnummer</li>
+                <li data-i18n="pp.3.l4">Bedrijfsnaam (indien van toepassing)</li>
+                <li data-i18n="pp.3.l5">Adres van de woning of het pand</li>
+                <li data-i18n="pp.3.l6">Projectgegevens</li>
+                <li data-i18n="pp.3.l7">Foto's of documenten die u vrijwillig verstrekt</li>
+                <li data-i18n="pp.3.l8">IP-adres</li>
+                <li data-i18n="pp.3.l9">Browser- en apparaatgegevens</li>
+              </ul>
+            </section>
+
+            <section class="legal-block" id="pp-4">
+              <h2><span class="n">04</span><span data-i18n="pp.4.h">Hoe wij uw gegevens gebruiken</span></h2>
+              <p data-i18n="pp.4.p">Uw gegevens worden gebruikt om:</p>
+              <ul class="legal-list">
+                <li data-i18n="pp.4.l1">Op aanvragen te reageren</li>
+                <li data-i18n="pp.4.l2">Offertes op te stellen</li>
+                <li data-i18n="pp.4.l3">Renovatie- en bouwwerkzaamheden uit te voeren</li>
+                <li data-i18n="pp.4.l4">Over projecten te communiceren</li>
+                <li data-i18n="pp.4.l5">Facturen en betalingen te verwerken</li>
+                <li data-i18n="pp.4.l6">Onze website te verbeteren</li>
+                <li data-i18n="pp.4.l7">Te voldoen aan wettelijke verplichtingen</li>
+              </ul>
+            </section>
+
+            <section class="legal-block" id="pp-5">
+              <h2><span class="n">05</span><span data-i18n="pp.5.h">Wettelijke grondslag</span></h2>
+              <p data-i18n="pp.5.p">Wij verwerken persoonsgegevens op basis van:</p>
+              <ul class="legal-list">
+                <li data-i18n="pp.5.l1">Uw toestemming</li>
+                <li data-i18n="pp.5.l2">De uitvoering van een overeenkomst</li>
+                <li data-i18n="pp.5.l3">Wettelijke verplichtingen</li>
+                <li data-i18n="pp.5.l4">Gerechtvaardigde bedrijfsbelangen</li>
+              </ul>
+            </section>
+
+            <section class="legal-block" id="pp-6">
+              <h2><span class="n">06</span><span data-i18n="pp.6.h">Delen van gegevens</span></h2>
+              <p class="legal-emph" data-i18n="pp.6.p1">Wij verkopen uw persoonsgegevens niet.</p>
+              <p data-i18n="pp.6.p2">Wij kunnen gegevens delen met vertrouwde dienstverleners, waaronder:</p>
+              <ul class="legal-list">
+                <li data-i18n="pp.6.l1">Boekhoudkantoren</li>
+                <li data-i18n="pp.6.l2">Hostingpartijen</li>
+                <li data-i18n="pp.6.l3">E-mailproviders</li>
+                <li data-i18n="pp.6.l4">IT-ondersteuning</li>
+                <li data-i18n="pp.6.l5">Analyseproviders (zoals Google Analytics)</li>
+              </ul>
+              <p data-i18n="pp.6.p3">Alle derde partijen verwerken uw gegevens veilig en uitsluitend wanneer dit noodzakelijk is.</p>
+            </section>
+
+            <section class="legal-block" id="pp-7">
+              <h2><span class="n">07</span><span data-i18n="pp.7.h">Bewaartermijn</span></h2>
+              <p data-i18n="pp.7.p">Wij bewaren persoonsgegevens niet langer dan nodig is om onze diensten te leveren of om te voldoen aan wettelijke verplichtingen.</p>
+            </section>
+
+            <section class="legal-block" id="pp-8">
+              <h2><span class="n">08</span><span data-i18n="pp.8.h">Uw rechten</span></h2>
+              <p data-i18n="pp.8.p">Op grond van de AVG heeft u het recht om:</p>
+              <ul class="legal-list">
+                <li data-i18n="pp.8.l1">Uw persoonsgegevens in te zien</li>
+                <li data-i18n="pp.8.l2">Onjuiste gegevens te laten corrigeren</li>
+                <li data-i18n="pp.8.l3">Verwijdering van uw gegevens te verzoeken</li>
+                <li data-i18n="pp.8.l4">De verwerking te laten beperken</li>
+                <li data-i18n="pp.8.l5">Bezwaar te maken tegen de verwerking</li>
+                <li data-i18n="pp.8.l6">Een kopie van uw gegevens te ontvangen (dataportabiliteit)</li>
+                <li data-i18n="pp.8.l7">Uw toestemming in te trekken waar dit van toepassing is</li>
+              </ul>
+              <p data-i18n="pp.8.p2">Wilt u van deze rechten gebruikmaken? Neem dan contact met ons op via de bovenstaande gegevens.</p>
+            </section>
+
+            <section class="legal-block" id="pp-9">
+              <h2><span class="n">09</span><span data-i18n="pp.9.h">Cookies</span></h2>
+              <p data-i18n="pp.9.p">Onze website kan cookies gebruiken om de functionaliteit te verbeteren, het verkeer te analyseren en de gebruikerservaring te optimaliseren. U kunt uw cookievoorkeuren beheren via de instellingen van uw browser.</p>
+            </section>
+
+            <section class="legal-block" id="pp-10">
+              <h2><span class="n">10</span><span data-i18n="pp.10.h">Beveiliging</span></h2>
+              <p data-i18n="pp.10.p">Wij nemen passende technische en organisatorische maatregelen om uw persoonsgegevens te beschermen tegen ongeautoriseerde toegang, openbaarmaking, wijziging of vernietiging.</p>
+            </section>
+
+            <section class="legal-block" id="pp-11">
+              <h2><span class="n">11</span><span data-i18n="pp.11.h">Wijzigingen</span></h2>
+              <p data-i18n="pp.11.p">Wij kunnen dit privacybeleid van tijd tot tijd bijwerken. De meest recente versie is altijd beschikbaar op deze website.</p>
+            </section>
+
+            <section class="legal-block" id="pp-12">
+              <h2><span class="n">12</span><span data-i18n="pp.12.h">Contact</span></h2>
+              <p data-i18n="pp.12.p">Heeft u vragen over dit privacybeleid of over uw persoonsgegevens? Neem dan contact met ons op:</p>
+              <div class="legal-facts">
+                <div class="legal-fact"><span class="k" data-i18n="legal.email">E-mail</span><span class="v"><a href="mailto:herstelenbouw@gmail.com">herstelenbouw@gmail.com</a></span></div>
+                <div class="legal-fact"><span class="k" data-i18n="legal.phone">Telefoon</span><span class="v"><a href="tel:+31629481014">+31 6 29 48 10 14</a></span></div>
+              </div>
+            </section>
+
+            <div class="legal-foot">
+              <a class="btn" href="index.html#contact"><span data-i18n="btn.quote">Vraag een offerte aan</span>
+                <span class="btn-ico"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12 12 4M6 4h6v6"/></svg></span></a>
+              <a class="btn btn--ghost" href="voorwaarden.html"><span data-i18n="footer.terms">Algemene voorwaarden</span></a>
             </div>
-            <div class="btns">
-              <a class="btn btn--light" href="index.html#contact"><span data-i18n="btn.discuss">Project bespreken</span></a>
-              <a class="btn btn--ghost" href="https://wa.me/31629481014" target="_blank" rel="noopener" style="--fg:#fff;border-color:rgba(255,255,255,.3)"><span data-i18n="btn.whatsapp">WhatsApp</span></a>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
+          </article>
 
-    <!-- OTHER PROJECTS -->
-    <section class="section section--cream">
-      <div class="container">
-        <div class="section-header reveal">
-          <span class="eyebrow" data-i18n="sp.other">Andere projecten</span>
-          <h2 class="h2" data-i18n="sp.other">Andere projecten</h2>
         </div>
-        <div class="projects-grid cols-3" id="sp-other" style="margin-top:2.5rem"></div>
       </div>
     </section>
   </main>
 
+  <!-- ===================== FOOTER ===================== -->
   <footer class="footer">
     <div class="container">
       <div class="footer-top">
@@ -247,8 +296,8 @@
             <div class="footer-menu-text" data-i18n="footer.info">Informatie</div>
             <div class="footer-link-wrap">
               <a class="footer-link" href="index.html#faq"><span class="footer-link-text" data-i18n="nav.faq">FAQ</span><span class="footer-link-text" data-i18n="nav.faq">FAQ</span></a>
-              <a class="footer-link" href="#"><span class="footer-link-text" data-i18n="footer.privacy">Privacybeleid</span><span class="footer-link-text" data-i18n="footer.privacy">Privacybeleid</span></a>
-              <a class="footer-link" href="#"><span class="footer-link-text" data-i18n="footer.terms">Algemene voorwaarden</span><span class="footer-link-text" data-i18n="footer.terms">Algemene voorwaarden</span></a>
+              <a class="footer-link" href="privacy.html"><span class="footer-link-text" data-i18n="footer.privacy">Privacybeleid</span><span class="footer-link-text" data-i18n="footer.privacy">Privacybeleid</span></a>
+              <a class="footer-link" href="voorwaarden.html"><span class="footer-link-text" data-i18n="footer.terms">Algemene voorwaarden</span><span class="footer-link-text" data-i18n="footer.terms">Algemene voorwaarden</span></a>
             </div>
           </div>
         </div>

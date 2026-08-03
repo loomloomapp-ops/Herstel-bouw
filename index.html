@@ -15,7 +15,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/style.css?v=20260803" />
 </head>
 <body data-page="home">
 
@@ -410,59 +410,10 @@
 
         <!-- ---------- write a review ---------- -->
         <div class="rv-block reveal">
-          <button class="btn btn--dark rv-toggle" id="rv-toggle" type="button" aria-expanded="false" aria-controls="rv-panel">
+          <button class="btn btn--dark rv-open" id="rv-open" type="button" aria-haspopup="dialog">
             <span data-i18n="rv.open">Schrijf een beoordeling</span>
             <span class="btn-ico"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12 12 4M6 4h6v6"/></svg></span>
           </button>
-
-          <div class="rv-panel" id="rv-panel" hidden>
-            <p class="rv-intro" data-i18n="rv.intro">Deel uw ervaring. Beoordelingen worden eerst door ons gecontroleerd en daarna op de site geplaatst.</p>
-
-            <form class="rv-form" id="rv-form" novalidate>
-              <div class="rv-grid">
-                <label class="rv-field">
-                  <span data-i18n="rv.name">Naam *</span>
-                  <input type="text" name="name" required maxlength="120" autocomplete="name">
-                </label>
-                <label class="rv-field">
-                  <span data-i18n="rv.location">Plaats</span>
-                  <input type="text" name="location" maxlength="120" data-i18n-ph="rv.locationPh" placeholder="Amsterdam">
-                </label>
-                <label class="rv-field">
-                  <span data-i18n="rv.service">Soort werk</span>
-                  <input type="text" name="service" maxlength="160" data-i18n-ph="rv.servicePh" placeholder="Badkamerrenovatie">
-                </label>
-                <label class="rv-field">
-                  <span data-i18n="rv.email">E-mail <em data-i18n="rv.emailNote">(niet zichtbaar op de site)</em></span>
-                  <input type="email" name="email" maxlength="160" autocomplete="email">
-                </label>
-              </div>
-
-              <div class="rv-field">
-                <span data-i18n="rv.rating">Beoordeling *</span>
-                <div class="rv-stars" id="rv-stars" role="radiogroup"></div>
-              </div>
-
-              <label class="rv-field">
-                <span data-i18n="rv.text">Uw beoordeling *</span>
-                <textarea name="text" rows="5" required maxlength="2000" data-i18n-ph="rv.textPh" placeholder="Vertel kort hoe het project is verlopen…"></textarea>
-                <small class="rv-counter"><span id="rv-count">0</span> / 2000</small>
-              </label>
-
-              <!-- honeypot: hidden from people, irresistible to bots -->
-              <div class="rv-hp" aria-hidden="true">
-                <label>Website<input type="text" name="website" tabindex="-1" autocomplete="off"></label>
-              </div>
-
-              <div class="rv-actions">
-                <button class="btn btn--dark" type="submit">
-                  <span data-i18n="rv.submit">Beoordeling versturen</span>
-                  <span class="btn-ico"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8h10M9 4l4 4-4 4"/></svg></span>
-                </button>
-                <p class="rv-status" id="rv-status" role="status" aria-live="polite"></p>
-              </div>
-            </form>
-          </div>
         </div>
       </div>
     </section>
@@ -609,8 +560,73 @@
     </div>
   </footer>
 
-  <script src="js/i18n.js"></script>
-  <script src="js/data.js"></script>
-  <script src="js/main.js"></script>
+  <!-- ===================== REVIEW DIALOG =====================
+       Lives at the end of <body>, outside any .reveal wrapper: those animate
+       with a transform, and a transformed ancestor would trap position:fixed
+       inside itself. -->
+  <div class="rv-modal" id="rv-modal" hidden>
+    <div class="rv-backdrop" data-rv-close></div>
+
+    <div class="rv-dialog" role="dialog" aria-modal="true" aria-labelledby="rv-title">
+      <button class="rv-close" type="button" data-rv-close aria-label="Sluiten">
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><path d="M4 4l8 8M12 4l-8 8"/></svg>
+      </button>
+
+      <div class="rv-head">
+        <span class="eyebrow" data-i18n="rv.eyebrow">Beoordeling</span>
+        <h2 class="rv-title" id="rv-title" data-i18n="rv.title">Deel uw ervaring</h2>
+        <p class="rv-intro" data-i18n="rv.intro">Beoordelingen worden eerst door ons gecontroleerd en daarna op de site geplaatst.</p>
+      </div>
+
+      <form class="rv-form" id="rv-form" novalidate>
+        <div class="rv-rating">
+          <span class="rv-label" data-i18n="rv.rating">Uw beoordeling *</span>
+          <div class="rv-stars" id="rv-stars" role="radiogroup"></div>
+        </div>
+
+        <div class="rv-grid">
+          <label class="rv-field">
+            <span class="rv-label" data-i18n="rv.name">Naam *</span>
+            <input type="text" name="name" required maxlength="120" autocomplete="name">
+          </label>
+          <label class="rv-field">
+            <span class="rv-label" data-i18n="rv.location">Plaats</span>
+            <input type="text" name="location" maxlength="120" data-i18n-ph="rv.locationPh" placeholder="Amsterdam">
+          </label>
+          <label class="rv-field">
+            <span class="rv-label" data-i18n="rv.service">Soort werk</span>
+            <input type="text" name="service" maxlength="160" data-i18n-ph="rv.servicePh" placeholder="Badkamerrenovatie">
+          </label>
+          <label class="rv-field">
+            <span class="rv-label" data-i18n="rv.email">E-mail <em data-i18n="rv.emailNote">(niet zichtbaar op de site)</em></span>
+            <input type="email" name="email" maxlength="160" autocomplete="email">
+          </label>
+        </div>
+
+        <label class="rv-field">
+          <span class="rv-label" data-i18n="rv.text">Uw beoordeling *</span>
+          <textarea name="text" rows="5" required maxlength="2000" data-i18n-ph="rv.textPh" placeholder="Vertel kort hoe het project is verlopen…"></textarea>
+          <small class="rv-counter"><span id="rv-count">0</span> / 2000</small>
+        </label>
+
+        <!-- honeypot: hidden from people, irresistible to bots -->
+        <div class="rv-hp" aria-hidden="true">
+          <label>Website<input type="text" name="website" tabindex="-1" autocomplete="off"></label>
+        </div>
+
+        <div class="rv-actions">
+          <button class="btn btn--dark" type="submit">
+            <span data-i18n="rv.submit">Beoordeling versturen</span>
+            <span class="btn-ico"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8h10M9 4l4 4-4 4"/></svg></span>
+          </button>
+          <p class="rv-status" id="rv-status" role="status" aria-live="polite"></p>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script src="js/i18n.js?v=20260803"></script>
+  <script src="js/data.js?v=20260803"></script>
+  <script src="js/main.js?v=20260803"></script>
 </body>
 </html>

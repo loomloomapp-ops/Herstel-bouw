@@ -129,7 +129,10 @@ window.HB_EN = {
 
   /* Review form */
   "rv.open": "Write a review",
-  "rv.intro": "Share your experience. Reviews are checked by us first and then published on the site.",
+  "rv.eyebrow": "Review",
+  "rv.title": "Share your experience",
+
+  "rv.intro": "Reviews are checked by us first and then published on the site.",
   "rv.name": "Name *",
   "rv.location": "Town",
   "rv.locationPh": "Amsterdam",

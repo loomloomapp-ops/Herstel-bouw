@@ -772,7 +772,7 @@ body.nav-open .nav-overlay-menu a { opacity: 1; transform: none; }
 .gal-group.g4 { transform: rotateY(90deg); }
 .gal-group.g5 { transform: rotateY(120deg); }
 .gal-group.g6 { transform: rotateY(150deg); }
-.gal-group.g7 { transform: rotateY(180deg); }
+.gal-group.g7 { transform: rotateY(180deg); justify-content: flex-end; } /* single photo — keep it on its original end of the track */
 .gal-shot {
   flex: none;
   width: 16.25rem;
@@ -864,7 +864,8 @@ body.nav-open .nav-overlay-menu a { opacity: 1; transform: none; }
 .section--cream .service-chips li { background: var(--clr-bg); }
 
 .process-grid { display: grid; grid-template-columns: 0.85fr 1.15fr; gap: clamp(2rem, 4vw, 4rem); align-items: center; margin-top: clamp(2.2rem, 4vw, 3.2rem); }
-.process-media img { width: 100%; aspect-ratio: 4 / 5; object-fit: cover; border-radius: var(--r-xl); }
+/* landscape frame — matches the plan render used as the approach visual */
+.process-media img { width: 100%; aspect-ratio: 4 / 3; object-fit: cover; border-radius: var(--r-xl); background: var(--clr-surface-2); }
 .process-steps { display: flex; flex-direction: column; }
 .process-step { display: flex; gap: 1.3rem; padding: clamp(1.2rem, 2.2vw, 1.7rem) 0; border-top: 1px solid var(--clr-line); }
 .process-step:first-child { border-top: 0; padding-top: 0; }
@@ -891,6 +892,51 @@ body[data-page="vacancies"] main .section--tight { padding-block: clamp(2.5rem, 
 .vac-list li { position: relative; padding-left: 1.3rem; color: var(--clr-ink-soft); font-size: 0.94rem; line-height: 1.5; }
 .vac-list li::before { content: ""; position: absolute; left: 0; top: 0.5em; width: 0.42rem; height: 0.42rem; border-radius: 1px; background: var(--clr-gold); }
 .vac-card .link-arrow { margin-top: auto; padding-top: 0.4rem; }
+
+/* ==========================================================================
+   Legal pages (privacy policy, terms & conditions)
+   Two columns: a sticky article index on the left, the prose on the right.
+   ========================================================================== */
+body[data-page="legal"] main .section { padding-block: clamp(3rem, 5.5vw, 5.5rem); }
+.legal-wrap { display: grid; grid-template-columns: 17rem minmax(0, 48rem); gap: clamp(2rem, 5vw, 5rem); align-items: start; justify-content: start; }
+
+.legal-index { position: sticky; top: 7rem; display: flex; flex-direction: column; gap: 1.1rem; }
+.legal-index-title { font-size: 0.78rem; font-weight: 500; text-transform: uppercase; letter-spacing: var(--ls-label); color: var(--clr-ink-mute); }
+.legal-index-links { display: flex; flex-direction: column; gap: 0.15rem; }
+.legal-index-links a { display: flex; gap: 0.7rem; padding: 0.42rem 0; color: var(--clr-ink-soft); font-size: 0.97rem; line-height: 1.45; transition: color 0.3s var(--ease); }
+.legal-index-links a i { font-style: normal; color: var(--clr-gold-deep); font-variant-numeric: tabular-nums; }
+.legal-index-links a:hover { color: var(--clr-ink); }
+
+.legal-doc { min-width: 0; }
+.legal-updated { display: inline-flex; align-items: center; gap: 0.55rem; padding: 0.45rem 0.95rem; border: 1px solid var(--clr-line); border-radius: var(--r-full); background: var(--clr-surface); color: var(--clr-ink-soft); font-size: 0.88rem; }
+.legal-updated::before { content: ""; width: 0.42rem; height: 0.42rem; border-radius: 1px; background: var(--clr-gold); }
+
+.legal-block { padding-top: clamp(1.8rem, 3vw, 2.6rem); margin-top: clamp(1.8rem, 3vw, 2.6rem); border-top: 1px solid var(--clr-line); scroll-margin-top: 7.5rem; }
+.legal-block:first-of-type { border-top: 0; }
+.legal-block h2 { display: flex; gap: 0.85rem; font-size: clamp(1.25rem, 2vw, 1.55rem); font-weight: 500; letter-spacing: var(--ls-h3); line-height: 1.2; }
+.legal-block h2 .n { color: var(--clr-gold-deep); font-variant-numeric: tabular-nums; }
+.legal-block p { color: var(--clr-ink-soft); line-height: 1.75; margin-top: 0.9rem; max-width: 62ch; }
+/* emphasised statement — a class, not <strong>, so the EN swap keeps the styling */
+.legal-block p.legal-emph { color: var(--clr-ink); font-weight: 500; }
+
+.legal-list { display: flex; flex-direction: column; gap: 0.55rem; margin-top: 1.1rem; }
+.legal-list li { position: relative; padding-left: 1.3rem; color: var(--clr-ink-soft); line-height: 1.6; }
+.legal-list li::before { content: ""; position: absolute; left: 0; top: 0.62em; width: 0.42rem; height: 0.42rem; border-radius: 1px; background: var(--clr-gold); }
+
+.legal-facts { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1px; margin-top: 1.4rem; background: var(--clr-line); border: 1px solid var(--clr-line); border-radius: var(--r-lg); overflow: hidden; }
+.legal-fact { background: var(--clr-surface); padding: 1.15rem 1.35rem; }
+.legal-fact .k { display: block; font-size: 0.76rem; text-transform: uppercase; letter-spacing: 0.12em; color: var(--clr-ink-mute); }
+.legal-fact .v { display: block; margin-top: 0.3rem; font-size: 1.02rem; font-weight: 500; }
+.legal-fact a:hover { color: var(--clr-gold-deep); }
+
+.legal-foot { display: flex; flex-wrap: wrap; align-items: center; gap: 1rem; margin-top: clamp(2.2rem, 4vw, 3rem); padding-top: clamp(1.8rem, 3vw, 2.4rem); border-top: 1px solid var(--clr-line); }
+
+@media (max-width: 62rem) {
+  .legal-wrap { grid-template-columns: 1fr; }
+  .legal-index { position: static; }
+  .legal-index-links { display: grid; grid-template-columns: repeat(2, 1fr); column-gap: 1.5rem; }
+  .legal-facts { grid-template-columns: 1fr; }
+}
 
 /* ==========================================================================
    Footer
@@ -1152,36 +1198,62 @@ body[data-page="vacancies"] main .section--tight { padding-block: clamp(2.5rem, 
 
 /* ==========================================================================
    Review submission — visitors write, the owner approves in /admin/
+   The form lives in a centred dialog so it never stretches the page.
    ========================================================================== */
 .testi-stars .is-off { display: inline-flex; color: var(--clr-line); }
 .testi-stars .is-off svg { width: 1.05rem; height: 1.05rem; }
 
-.rv-block { margin-top: 2.4rem; display: flex; flex-direction: column; align-items: center; gap: 1.4rem; }
+.rv-block { margin-top: clamp(2rem, 4vw, 3rem); display: flex; justify-content: center; }
 
-.rv-panel {
-  width: 100%;
-  max-width: 46rem;
+/* ---------- dialog shell ---------- */
+.rv-modal { position: fixed; inset: 0; z-index: 120; display: grid; place-items: center; padding: clamp(1rem, 4vw, 2.5rem); }
+.rv-modal[hidden] { display: none; }
+
+.rv-backdrop { position: absolute; inset: 0; background: rgba(20, 18, 15, 0.55); backdrop-filter: blur(3px); animation: rv-fade 0.25s var(--ease, ease) both; }
+
+.rv-dialog {
+  position: relative;
+  width: min(46rem, 100%);
+  max-height: min(88vh, 54rem);
+  overflow-y: auto;
+  overscroll-behavior: contain;
   background: var(--clr-surface);
-  border: 1px solid var(--clr-line);
-  border-radius: var(--r-lg);
-  padding: 2rem;
+  border-radius: var(--r-xl, 1.5rem);
+  padding: clamp(1.75rem, 4vw, 2.75rem);
+  box-shadow: 0 2rem 5rem rgba(20, 18, 15, 0.28);
+  animation: rv-rise 0.32s cubic-bezier(0.22, 1, 0.36, 1) both;
 }
-.rv-panel[hidden] { display: none; }
 
-.rv-intro { color: var(--clr-ink-soft); font-size: 0.95rem; margin-bottom: 1.5rem; }
+@keyframes rv-fade { from { opacity: 0; } }
+@keyframes rv-rise { from { opacity: 0; transform: translateY(1.4rem) scale(0.985); } }
 
-.rv-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; }
-
-.rv-field { display: block; margin-bottom: 1.2rem; }
-.rv-grid .rv-field { margin-bottom: 0; }
-.rv-field > span {
-  display: block;
-  font-size: 0.85rem;
-  font-weight: 500;
-  color: var(--clr-ink);
-  margin-bottom: 0.45rem;
+@media (prefers-reduced-motion: reduce) {
+  .rv-backdrop, .rv-dialog { animation: none; }
 }
-.rv-field > span em { font-style: normal; color: var(--clr-ink-mute); font-weight: 400; }
+
+.rv-close {
+  position: absolute; top: 1rem; right: 1rem;
+  width: 2.4rem; height: 2.4rem;
+  display: grid; place-items: center;
+  border: 1px solid var(--clr-line); border-radius: var(--r-full, 999px);
+  background: var(--clr-surface); color: var(--clr-ink-soft);
+  cursor: pointer; transition: background 0.2s, color 0.2s, border-color 0.2s;
+}
+.rv-close svg { width: 0.95rem; height: 0.95rem; }
+.rv-close:hover { background: var(--clr-ink); border-color: var(--clr-ink); color: #fff; }
+
+/* ---------- head ---------- */
+.rv-head { margin-bottom: clamp(1.4rem, 3vw, 2rem); padding-right: 2.5rem; }
+.rv-title { font-size: clamp(1.4rem, 2.6vw, 1.9rem); font-weight: 500; letter-spacing: var(--ls-h2); line-height: 1.15; margin-top: 0.7rem; }
+.rv-intro { color: var(--clr-ink-soft); font-size: 0.97rem; line-height: 1.6; margin-top: 0.7rem; max-width: 34rem; }
+
+/* ---------- fields ---------- */
+.rv-form { display: flex; flex-direction: column; gap: 1.15rem; }
+.rv-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1.15rem; }
+.rv-field { display: flex; flex-direction: column; gap: 0.45rem; min-width: 0; }
+
+.rv-label { font-size: 0.85rem; font-weight: 500; color: var(--clr-ink); }
+.rv-label em { font-style: normal; color: var(--clr-ink-mute); font-weight: 400; }
 
 .rv-field input[type="text"],
 .rv-field input[type="email"],
@@ -1191,42 +1263,53 @@ body[data-page="vacancies"] main .section--tight { padding-block: clamp(2.5rem, 
   color: var(--clr-ink);
   background: var(--clr-bg);
   border: 1px solid var(--clr-line);
-  border-radius: var(--r-sm, 0.6rem);
-  padding: 0.7rem 0.85rem;
+  border-radius: var(--r-md, 0.75rem);
+  padding: 0.78rem 0.95rem;
   outline: none;
-  transition: border-color 0.15s, box-shadow 0.15s;
+  transition: border-color 0.18s, box-shadow 0.18s, background 0.18s;
 }
+.rv-field input::placeholder, .rv-field textarea::placeholder { color: var(--clr-ink-mute); }
 .rv-field input:focus, .rv-field textarea:focus {
-  border-color: var(--clr-accent);
+  background: var(--clr-surface);
+  border-color: var(--clr-ink);
   box-shadow: 0 0 0 3px rgba(28, 27, 24, 0.07);
 }
-.rv-field textarea { resize: vertical; min-height: 8rem; line-height: 1.55; }
+.rv-field textarea { resize: vertical; min-height: 8.5rem; line-height: 1.6; }
 
-.rv-counter { display: block; text-align: right; margin-top: 0.35rem; font-size: 0.78rem; color: var(--clr-ink-mute); }
+.rv-counter { align-self: flex-end; font-size: 0.78rem; color: var(--clr-ink-mute); }
 
-.rv-stars { display: flex; gap: 0.3rem; }
-.rv-star {
-  border: 0;
-  background: none;
-  padding: 0.1rem;
-  cursor: pointer;
-  color: var(--clr-line);
-  line-height: 0;
-  transition: color 0.12s, transform 0.12s;
+/* ---------- rating ---------- */
+.rv-rating {
+  display: flex; align-items: center; gap: 1rem; flex-wrap: wrap;
+  padding: 0.9rem 1.1rem;
+  background: var(--clr-accent-soft);
+  border-radius: var(--r-md, 0.75rem);
 }
-.rv-star svg { width: 1.6rem; height: 1.6rem; }
+.rv-stars { display: flex; gap: 0.15rem; }
+.rv-star {
+  border: 0; background: none; padding: 0.15rem;
+  line-height: 0; cursor: pointer;
+  color: rgba(28, 27, 24, 0.18);
+  transition: color 0.15s, transform 0.15s;
+}
+.rv-star svg { width: 1.7rem; height: 1.7rem; }
 .rv-star.is-on { color: var(--clr-gold); }
-.rv-star:hover { transform: scale(1.12); }
+.rv-star:hover { transform: scale(1.14); }
+.rv-star:focus-visible { outline: 2px solid var(--clr-ink); outline-offset: 2px; border-radius: 4px; }
 
-/* Off-screen, not display:none — bots read the DOM, not the styles. */
+/* Off-screen rather than display:none — bots read the DOM, not the styles. */
 .rv-hp { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
 
-.rv-actions { display: flex; align-items: center; gap: 1rem; flex-wrap: wrap; }
-.rv-status { font-size: 0.9rem; color: var(--clr-ink-soft); margin: 0; }
+/* ---------- actions ---------- */
+.rv-actions { display: flex; align-items: center; gap: 1rem; flex-wrap: wrap; margin-top: 0.3rem; }
+.rv-status { font-size: 0.9rem; line-height: 1.5; color: var(--clr-ink-soft); margin: 0; flex: 1; min-width: 12rem; }
 .rv-status.ok { color: #2c6e4b; }
 .rv-status.err { color: var(--clr-err); }
 
-@media (max-width: 640px) {
+body.rv-open-lock { overflow: hidden; }
+
+@media (max-width: 40rem) {
   .rv-grid { grid-template-columns: 1fr; }
-  .rv-panel { padding: 1.4rem; }
+  .rv-dialog { max-height: 92vh; border-radius: var(--r-lg, 1rem); }
+  .rv-rating { justify-content: center; }
 }
