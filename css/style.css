@@ -1149,3 +1149,84 @@ body[data-page="vacancies"] main .section--tight { padding-block: clamp(2.5rem, 
   .footer-text-wrap { align-items: center; }
   .footer-text-wrap-main { justify-content: center; }
 }
+
+/* ==========================================================================
+   Review submission — visitors write, the owner approves in /admin/
+   ========================================================================== */
+.testi-stars .is-off { display: inline-flex; color: var(--clr-line); }
+.testi-stars .is-off svg { width: 1.05rem; height: 1.05rem; }
+
+.rv-block { margin-top: 2.4rem; display: flex; flex-direction: column; align-items: center; gap: 1.4rem; }
+
+.rv-panel {
+  width: 100%;
+  max-width: 46rem;
+  background: var(--clr-surface);
+  border: 1px solid var(--clr-line);
+  border-radius: var(--r-lg);
+  padding: 2rem;
+}
+.rv-panel[hidden] { display: none; }
+
+.rv-intro { color: var(--clr-ink-soft); font-size: 0.95rem; margin-bottom: 1.5rem; }
+
+.rv-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; }
+
+.rv-field { display: block; margin-bottom: 1.2rem; }
+.rv-grid .rv-field { margin-bottom: 0; }
+.rv-field > span {
+  display: block;
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--clr-ink);
+  margin-bottom: 0.45rem;
+}
+.rv-field > span em { font-style: normal; color: var(--clr-ink-mute); font-weight: 400; }
+
+.rv-field input[type="text"],
+.rv-field input[type="email"],
+.rv-field textarea {
+  width: 100%;
+  font: inherit;
+  color: var(--clr-ink);
+  background: var(--clr-bg);
+  border: 1px solid var(--clr-line);
+  border-radius: var(--r-sm, 0.6rem);
+  padding: 0.7rem 0.85rem;
+  outline: none;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+.rv-field input:focus, .rv-field textarea:focus {
+  border-color: var(--clr-accent);
+  box-shadow: 0 0 0 3px rgba(28, 27, 24, 0.07);
+}
+.rv-field textarea { resize: vertical; min-height: 8rem; line-height: 1.55; }
+
+.rv-counter { display: block; text-align: right; margin-top: 0.35rem; font-size: 0.78rem; color: var(--clr-ink-mute); }
+
+.rv-stars { display: flex; gap: 0.3rem; }
+.rv-star {
+  border: 0;
+  background: none;
+  padding: 0.1rem;
+  cursor: pointer;
+  color: var(--clr-line);
+  line-height: 0;
+  transition: color 0.12s, transform 0.12s;
+}
+.rv-star svg { width: 1.6rem; height: 1.6rem; }
+.rv-star.is-on { color: var(--clr-gold); }
+.rv-star:hover { transform: scale(1.12); }
+
+/* Off-screen, not display:none — bots read the DOM, not the styles. */
+.rv-hp { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
+
+.rv-actions { display: flex; align-items: center; gap: 1rem; flex-wrap: wrap; }
+.rv-status { font-size: 0.9rem; color: var(--clr-ink-soft); margin: 0; }
+.rv-status.ok { color: #2c6e4b; }
+.rv-status.err { color: var(--clr-err); }
+
+@media (max-width: 640px) {
+  .rv-grid { grid-template-columns: 1fr; }
+  .rv-panel { padding: 1.4rem; }
+}

@@ -2,3 +2,16 @@
 Thumbs.db
 *.log
 node_modules/
+
+# Admin panel — generated per install, never committed
+admin/config.php
+admin/storage/*
+!admin/storage/.htaccess
+!admin/storage/.gitkeep
+# The review store ships with the nine original testimonials so a fresh
+# deploy is not empty. On the live server it also accumulates pending
+# reviews and submitter e-mail addresses — do not copy it back into git.
+!admin/storage/reviews.php
+data/.backups/*
+!data/.backups/.htaccess
+!data/.backups/.gitkeep
