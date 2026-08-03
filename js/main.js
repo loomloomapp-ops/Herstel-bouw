@@ -21,6 +21,21 @@
   var ARROW_PLAIN = '<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8h10M9 4l4 4-4 4"/></svg>';
   function t(key, fallback) { return lang === "en" ? (EN[key] != null ? EN[key] : fallback) : fallback; }
 
+  /* Content comes from admin-editable JSON, so it is escaped before it is
+     ever concatenated into innerHTML — an apostrophe or "<" in a title
+     would otherwise break the markup. */
+  function esc(s) {
+    return String(s == null ? "" : s)
+      .replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;").replace(/'/g, "&#39;");
+  }
+  /* { nl, en } field -> string for the active language, falling back to NL. */
+  function pick(f) {
+    if (f == null) return "";
+    if (typeof f === "string") return f;
+    return f[lang] || f.nl || f.en || "";
+  }
+
   /* ---------- i18n ---------- */
   function cacheStaticText() {
     $all("[data-i18n]").forEach(function (el) {
@@ -189,14 +204,23 @@
   }
 
   /* ---------- testimonials ---------- */
+  /* Re-runnable: the cards are rebuilt whenever reviews load or the
+     language changes, so every call starts from a clean slate. */
   function initTestimonials() {
     var grid = $("#testi-grid"), dotsHost = $("#testi-dots");
     var prevBtn = $("#testi-prev"), nextBtn = $("#testi-next");
     if (!grid || !dotsHost) return;
     var cards = $all(".testi-card", grid);
 
+    dotsHost.innerHTML = "";
+    dotsHost.style.display = "";
+    if (prevBtn) { prevBtn.style.display = ""; prevBtn.onclick = null; prevBtn.disabled = false; }
+    if (nextBtn) { nextBtn.style.display = ""; nextBtn.onclick = null; nextBtn.disabled = false; }
+
     /* On phones the reviews become a swipeable horizontal slider. */
     if (window.matchMedia("(max-width: 760px)").matches) {
+      if (prevBtn) prevBtn.style.display = "none";
+      if (nextBtn) nextBtn.style.display = "none";
       initTestiSlider(grid, dotsHost, cards);
       return;
     }
@@ -216,8 +240,8 @@
       (function (idx) { d.addEventListener("click", function () { show(idx); }); })(i);
       dotsHost.appendChild(d); dots.push(d);
     }
-    if (prevBtn) prevBtn.addEventListener("click", function () { show(cur - 1); });
-    if (nextBtn) nextBtn.addEventListener("click", function () { show(cur + 1); });
+    if (prevBtn) prevBtn.onclick = function () { show(cur - 1); };
+    if (nextBtn) nextBtn.onclick = function () { show(cur + 1); };
     function show(n) {
       cur = Math.max(0, Math.min(pages - 1, n));
       cards.forEach(function (c, idx) {
@@ -234,7 +258,7 @@
 
   /* mobile reviews slider — scroll-snap track with dot indicators */
   function initTestiSlider(grid, dotsHost, cards) {
-    if (!cards.length) return;
+    if (!cards.length) { dotsHost.style.display = "none"; return; }
     cards.forEach(function (c) { c.removeAttribute("hidden"); c.classList.add("in"); });
     dotsHost.innerHTML = "";
     var dots = cards.map(function (_, i) {
@@ -254,11 +278,18 @@
       var idx = curIndex();
       dots.forEach(function (d, di) { d.classList.toggle("is-active", di === idx); });
     }
-    var raf = 0;
-    grid.addEventListener("scroll", function () {
-      if (raf) return;
-      raf = window.requestAnimationFrame(function () { raf = 0; paint(); });
-    }, { passive: true });
+    /* The grid survives re-renders, so the scroll listener is attached
+       once — otherwise every language switch would stack another one. */
+    if (!grid.__hbScrollBound) {
+      grid.__hbScrollBound = true;
+      var raf = 0;
+      grid.addEventListener("scroll", function () {
+        if (raf) return;
+        raf = window.requestAnimationFrame(function () { raf = 0; paintDots(); });
+      }, { passive: true });
+    }
+    grid.__hbPaintDots = paint;
+    function paintDots() { if (grid.__hbPaintDots) grid.__hbPaintDots(); }
     paint();
   }
 
@@ -332,18 +363,176 @@
     });
   }
 
+  /* ---------- services rendering ----------
+     Markup mirrors what used to be inline in index.html, so the existing
+     .svc-row styles keep working. Numbers are derived from position, so
+     reordering in the admin never leaves a gap. */
+  var SVC_ARROW = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M8 7h9v9"/></svg>';
+
+  function serviceRow(s, i) {
+    var num = String(i + 1);
+    if (num.length < 2) num = "0" + num;
+    var title = pick(s.title), desc = pick(s.desc);
+    return '<a class="svc-row reveal" href="' + esc(s.href || "#contact") + '">' +
+      '<span class="svc-overlay" aria-hidden="true"></span>' +
+      '<span class="svc-num">' + num + '</span>' +
+      '<span class="svc-text"><span class="svc-name">' + esc(title) + '</span>' +
+      '<span class="svc-desc">' + esc(desc) + '</span></span>' +
+      '<span class="svc-thumb" aria-hidden="true"><img src="' + esc(s.image || "") + '" alt="" loading="lazy" /></span>' +
+      '<span class="svc-arrow" aria-hidden="true">' + SVC_ARROW + '</span>' +
+    '</a>';
+  }
+
+  function renderServices() {
+    var host = $("#svc-list");
+    if (!host) return;
+    host.innerHTML = (window.HB_SERVICES || []).map(serviceRow).join("");
+    observeNew(host);
+  }
+
+  /* ---------- reviews rendering ----------
+     data/reviews.json only ever contains reviews the owner approved in the
+     admin panel; pending ones live in a private file the site cannot see. */
+  var STAR = '<svg viewBox="0 0 24 24" fill="currentColor"><path d="m12 2 3 6.9 7.5.6-5.7 4.9 1.8 7.3L12 17.8 5.4 21.7l1.8-7.3L1.5 9.5 9 8.9z"/></svg>';
+
+  function initials(name) {
+    var parts = String(name || "").trim().split(/\s+/).filter(Boolean);
+    if (!parts.length) return "?";
+    var first = parts[0].charAt(0);
+    var last = parts.length > 1 ? parts[parts.length - 1].charAt(0) : "";
+    return (first + last).toUpperCase();
+  }
+
+  function stars(n) {
+    n = Math.max(1, Math.min(5, parseInt(n, 10) || 5));
+    var out = "";
+    for (var i = 1; i <= 5; i++) {
+      out += i <= n ? STAR : '<span class="is-off">' + STAR + "</span>";
+    }
+    return out;
+  }
+
+  function reviewCard(r) {
+    var sub = [r.location, pick(r.service)].filter(Boolean).join(" · ");
+    return '<article class="testi-card reveal">' +
+      '<div class="testi-stars">' + stars(r.rating) + '</div>' +
+      '<blockquote>' + esc(pick(r.text)) + '</blockquote>' +
+      '<div class="testi-foot"><span class="avatar">' + esc(initials(r.name)) + '</span>' +
+      '<span class="who"><strong>' + esc(r.name) + '</strong><span>' + esc(sub) + '</span></span></div>' +
+    '</article>';
+  }
+
+  function renderReviews() {
+    var host = $("#testi-grid");
+    if (!host) return;
+    var list = window.HB_REVIEWS || [];
+    host.innerHTML = list.map(reviewCard).join("");
+    observeNew(host);
+    initTestimonials();   /* rebuild pagination for the new card set */
+  }
+
+  /* ---------- review submission form ---------- */
+  function initReviewForm() {
+    var toggle = $("#rv-toggle"), panel = $("#rv-panel"), form = $("#rv-form");
+    if (!toggle || !panel || !form) return;
+
+    toggle.addEventListener("click", function () {
+      var open = panel.hasAttribute("hidden");
+      if (open) panel.removeAttribute("hidden"); else panel.setAttribute("hidden", "");
+      toggle.setAttribute("aria-expanded", open ? "true" : "false");
+      if (open) {
+        panel.scrollIntoView({ behavior: "smooth", block: "nearest" });
+        var f = $("input[name=name]", form); if (f) f.focus();
+      }
+    });
+
+    /* star picker */
+    var rating = 5;
+    var starHost = $("#rv-stars");
+    function paintStars() {
+      $all("button", starHost).forEach(function (b, i) {
+        b.classList.toggle("is-on", i < rating);
+        b.setAttribute("aria-checked", i + 1 === rating ? "true" : "false");
+      });
+    }
+    for (var i = 1; i <= 5; i++) {
+      (function (n) {
+        var b = document.createElement("button");
+        b.type = "button";
+        b.className = "rv-star";
+        b.setAttribute("role", "radio");
+        b.setAttribute("aria-label", n + " / 5");
+        b.innerHTML = STAR;
+        b.addEventListener("click", function () { rating = n; paintStars(); });
+        starHost.appendChild(b);
+      })(i);
+    }
+    paintStars();
+
+    /* character counter */
+    var area = $("textarea[name=text]", form), counter = $("#rv-count");
+    if (area && counter) {
+      area.addEventListener("input", function () { counter.textContent = area.value.length; });
+    }
+
+    form.addEventListener("submit", function (e) {
+      e.preventDefault();
+      var status = $("#rv-status");
+      var btn = $("button[type=submit]", form);
+      var data = {
+        name: form.name.value,
+        location: form.location.value,
+        service: form.service.value,
+        email: form.email.value,
+        text: form.text.value,
+        website: form.website.value,     /* honeypot — must stay empty */
+        rating: rating,
+        lang: lang
+      };
+
+      status.className = "rv-status";
+      status.textContent = t("rv.sending", "Versturen…");
+      if (btn) btn.disabled = true;
+
+      fetch("review-submit.php", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data)
+      })
+        .then(function (r) { return r.json().catch(function () { return { ok: false }; }); })
+        .then(function (res) {
+          status.classList.add(res.ok ? "ok" : "err");
+          status.textContent = res.message ||
+            (lang === "en" ? "Something went wrong." : "Er ging iets mis.");
+          if (res.ok) {
+            form.reset();
+            rating = 5; paintStars();
+            if (counter) counter.textContent = "0";
+          }
+        })
+        .catch(function () {
+          status.classList.add("err");
+          status.textContent = lang === "en"
+            ? "Could not reach the server. Please try again later."
+            : "Kan de server niet bereiken. Probeer het later opnieuw.";
+        })
+        .finally(function () { if (btn) btn.disabled = false; });
+    });
+  }
+
   /* ---------- project rendering ---------- */
   function projectCard(p) {
+    var cat = pick(p.catLabel), title = pick(p.title);
     return '<article class="project-card reveal">' +
-      '<a class="project-media" href="project.html?id=' + p.id + '">' +
-        '<span class="tag">' + p.catLabel[lang] + '</span>' +
-        '<img src="' + p.cover + '" alt="' + p.title[lang] + '" loading="lazy">' +
+      '<a class="project-media" href="project.html?id=' + encodeURIComponent(p.id) + '">' +
+        '<span class="tag">' + esc(cat) + '</span>' +
+        '<img src="' + esc(p.cover) + '" alt="' + esc(title) + '" loading="lazy">' +
       '</a>' +
       '<div class="project-body">' +
-        '<div class="meta"><span>' + p.catLabel[lang] + '</span><span class="dot"></span><span>' + p.location + '</span></div>' +
-        '<h3>' + p.title[lang] + '</h3>' +
-        '<p>' + p.short[lang] + '</p>' +
-        '<a class="btn btn--dark btn--sm project-cta" href="project.html?id=' + p.id + '"><span>' + (lang === "en" ? EN["btn.viewProject"] : "Bekijk project") + '</span><span class="btn-ico">' + ARROW_PLAIN + '</span></a>' +
+        '<div class="meta"><span>' + esc(cat) + '</span><span class="dot"></span><span>' + esc(p.location) + '</span></div>' +
+        '<h3>' + esc(title) + '</h3>' +
+        '<p>' + esc(pick(p.short)) + '</p>' +
+        '<a class="btn btn--dark btn--sm project-cta" href="project.html?id=' + encodeURIComponent(p.id) + '"><span>' + (lang === "en" ? EN["btn.viewProject"] : "Bekijk project") + '</span><span class="btn-ico">' + ARROW_PLAIN + '</span></a>' +
       '</div>' +
     '</article>';
   }
@@ -369,40 +558,46 @@
     var host = $("#single-project");
     if (!host) return;
     var id = new URLSearchParams(location.search).get("id");
-    var p = window.HB_PROJECTS.filter(function (x) { return x.id === id; })[0] || window.HB_PROJECTS[0];
+    var all = window.HB_PROJECTS || [];
+    var p = all.filter(function (x) { return x.id === id; })[0] || all[0];
+    if (!p) return;   /* data missing — leave the static fallback markup alone */
     var L = lang;
+    var title = pick(p.title);
+    var meta_ = p.meta || {};
 
-    $("#sp-title").textContent = p.title[L];
-    var h1 = $("#sp-title-h1"); if (h1) h1.textContent = p.title[L];
-    $("#sp-tag").textContent = p.catLabel[L];
-    $("#sp-location").textContent = p.location;
-    $("#sp-short").textContent = p.short[L];
-    $("#sp-cover").src = p.cover; $("#sp-cover").alt = p.title[L];
-    $("#sp-intro").textContent = p.intro[L];
-    $("#sp-challenge").textContent = p.challenge[L];
-    var res = $("#sp-result"); if (res) res.textContent = p.result[L];
+    $("#sp-title").textContent = title;
+    var h1 = $("#sp-title-h1"); if (h1) h1.textContent = title;
+    $("#sp-tag").textContent = pick(p.catLabel);
+    $("#sp-location").textContent = p.location || "";
+    $("#sp-short").textContent = pick(p.short);
+    $("#sp-cover").src = p.cover || ""; $("#sp-cover").alt = title;
+    $("#sp-intro").textContent = pick(p.intro);
+    $("#sp-challenge").textContent = pick(p.challenge);
+    var res = $("#sp-result"); if (res) res.textContent = pick(p.result);
 
-    $("#sp-services").innerHTML = p.services[L].map(function (s) {
-      return '<li>' + s + '</li>';
+    var svcList = (p.services && (p.services[L] || p.services.nl)) || [];
+    $("#sp-services").innerHTML = svcList.map(function (s) {
+      return '<li>' + esc(s) + '</li>';
     }).join("");
 
     var meta = [
-      ["sp.metaDuration", "Duur", p.meta.duration[L]],
-      ["sp.metaType", "Type project", p.meta.type[L]],
-      ["sp.metaYear", "Jaar", p.meta.year]
+      ["sp.metaDuration", "Duur", pick(meta_.duration)],
+      ["sp.metaType", "Type project", pick(meta_.type)],
+      ["sp.metaYear", "Jaar", meta_.year || ""]
     ];
-    $("#sp-meta").innerHTML = meta.map(function (m) {
-      return '<div class="proj-meta"><div class="k">' + (L === "en" ? EN[m[0]] : m[1]) + '</div><div class="v">' + m[2] + '</div></div>';
+    $("#sp-meta").innerHTML = meta.filter(function (m) { return m[2]; }).map(function (m) {
+      return '<div class="proj-meta"><div class="k">' + esc(L === "en" ? EN[m[0]] : m[1]) + '</div><div class="v">' + esc(m[2]) + '</div></div>';
     }).join("");
 
-    $("#sp-gallery").innerHTML = p.gallery.map(function (g) {
-      return '<figure class="' + g.cls + '"><img src="' + g.src + '" alt="' + g.cap[L] + '" loading="lazy"><figcaption>' + g.cap[L] + '</figcaption></figure>';
+    $("#sp-gallery").innerHTML = (p.gallery || []).map(function (g) {
+      var cap = pick(g.cap);
+      return '<figure class="' + esc(g.cls || "g-half") + '"><img src="' + esc(g.src) + '" alt="' + esc(cap) + '" loading="lazy"><figcaption>' + esc(cap) + '</figcaption></figure>';
     }).join("");
 
-    var others = window.HB_PROJECTS.filter(function (x) { return x.id !== p.id; }).slice(0, 3);
+    var others = all.filter(function (x) { return x.id !== p.id; }).slice(0, 3);
     $("#sp-other").innerHTML = others.map(projectCard).join("");
     observeNew(host);
-    document.title = p.title[L] + " — Herstel & Bouw";
+    document.title = title + " — Herstel & Bouw";
   }
 
   function observeNew(scope) {
@@ -410,6 +605,8 @@
   }
 
   function renderDynamic() {
+    renderServices();
+    renderReviews();
     renderPortfolio();
     renderProjectsList();
     renderSingleProject();
@@ -433,19 +630,26 @@
   function initYear() { $all("[data-year]").forEach(function (e) { e.textContent = "2026"; }); }
 
   /* ---------- boot ---------- */
-  document.addEventListener("DOMContentLoaded", function () {
-    initPreloader();
+  function boot() {
     cacheStaticText();
     initNav();
     initHeroSlider();
     initFaq();
-    initTestimonials();
     initQuiz();
     initForms();
+    initReviewForm();
     initFilters();
     initYear();
     applyLang(lang);   /* also renders dynamic blocks */
     initReveal();
     initGallery();
+  }
+
+  document.addEventListener("DOMContentLoaded", function () {
+    /* The preloader starts first and hides on window.load, so a slow or
+       failed content fetch can never trap the page behind the intro. */
+    initPreloader();
+    var ready = window.HB_DATA_READY || Promise.resolve();
+    ready.then(boot, boot);
   });
 })();
