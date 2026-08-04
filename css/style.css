@@ -647,7 +647,10 @@ body.nav-open .nav-overlay-menu a { opacity: 1; transform: none; }
 .why-item p { font-size: 0.93rem; color: var(--clr-ink-soft); margin-top: 0.25rem; }
 .why-cta { margin-top: 1.9rem; align-self: flex-start; }
 .why-media { border-radius: var(--r-xl); overflow: hidden; box-shadow: var(--shadow-card); min-height: 28rem; height: 100%; }
-.why-media img { width: 100%; height: 100%; object-fit: cover; }
+/* The interior shot is landscape but the frame is portrait, so cover throws
+   away a third of the width. Anchoring left keeps the sofa and the slatted
+   wall whole instead of slicing the sofa down the middle. */
+.why-media img { width: 100%; height: 100%; object-fit: cover; object-position: left center; }
 
 /* ==========================================================================
    Testimonials
