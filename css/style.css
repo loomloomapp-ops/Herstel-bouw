@@ -772,7 +772,8 @@ body.nav-open .nav-overlay-menu a { opacity: 1; transform: none; }
 .gal-group.g4 { transform: rotateY(90deg); }
 .gal-group.g5 { transform: rotateY(120deg); }
 .gal-group.g6 { transform: rotateY(150deg); }
-.gal-group.g7 { transform: rotateY(180deg); justify-content: flex-end; } /* single photo — keep it on its original end of the track */
+/* Six planes × two ends = twelve evenly spaced slots. A seventh plane at
+   180deg would land on top of g1, so there deliberately isn't one. */
 .gal-shot {
   flex: none;
   width: 16.25rem;
