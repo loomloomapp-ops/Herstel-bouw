@@ -71,7 +71,7 @@ $csrf = hb_csrf_token();
 <meta name="robots" content="noindex, nofollow">
 <title>Herstel &amp; Bouw — панель керування</title>
 <link rel="icon" href="../images/logo-mark.png">
-<link rel="stylesheet" href="assets/admin.css?v=1">
+<link rel="stylesheet" href="assets/admin.css?v=2">
 </head>
 <body class="stage-<?= htmlspecialchars($stage, ENT_QUOTES) ?>">
 
@@ -182,7 +182,7 @@ $csrf = hb_csrf_token();
   </div>
 
   <script>window.HB_CSRF = <?= json_encode($csrf) ?>;</script>
-  <script src="assets/admin.js?v=1"></script>
+  <script src="assets/admin.js?v=2"></script>
 <?php endif; ?>
 
 </body>

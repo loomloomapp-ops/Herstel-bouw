@@ -261,8 +261,8 @@
   }
 
   /* Image chooser: preview + "вибрати" opens a grid of everything already
-     under images/. Upload is intentionally out of scope — files arrive via
-     FTP — so this only ever points at something that exists. */
+     under images/, plus an upload zone. Either way the field ends up holding
+     a path that exists on the server. */
   function imageField(label, current, onPick, note) {
     var img = el("img", { class: "imgpick-preview", src: "../" + (current || ""), alt: "" });
     img.addEventListener("error", function () { img.style.opacity = ".25"; });
@@ -294,32 +294,172 @@
     ]);
   }
 
+  /* ------------------------------------------------------------- uploading */
+  var UPLOAD_ACCEPT = "image/jpeg,image/png,image/webp";
+
+  function humanSize(bytes) {
+    var b = bytes || 0;
+    if (b < 1024) return b + " Б";          // a rejected 23-byte file is not "0 КБ"
+    var kb = b / 1024;
+    if (kb < 1024) return Math.round(kb) + " КБ";
+    return (kb / 1024).toFixed(1).replace(".", ",") + " МБ";
+  }
+
+  /* XMLHttpRequest rather than fetch: it reports upload progress, which
+     matters when the editor is pushing a 15 MB photo up a phone connection
+     and would otherwise be staring at a frozen panel. */
+  function apiUpload(file, onProgress) {
+    return new Promise(function (resolve, reject) {
+      var fd = new FormData();
+      fd.append("csrf", window.HB_CSRF);
+      fd.append("name", file.name || "");
+      fd.append("file", file);
+
+      var xhr = new XMLHttpRequest();
+      xhr.open("POST", "api.php?action=upload", true);
+      xhr.withCredentials = true;
+
+      if (xhr.upload && onProgress) {
+        xhr.upload.onprogress = function (e) {
+          if (e.lengthComputable) onProgress(e.loaded / e.total);
+        };
+      }
+      xhr.onload = function () {
+        var json = null;
+        try { json = JSON.parse(xhr.responseText); } catch (e) { /* left null */ }
+        if (!json) {
+          return reject(new Error("Сервер повернув несподівану відповідь (HTTP " + xhr.status + ")."));
+        }
+        if (xhr.status < 200 || xhr.status >= 300 || !json.ok) {
+          var err = new Error(json.error || "Не вдалося завантажити файл.");
+          err.payload = json;
+          return reject(err);
+        }
+        resolve(json.image);
+      };
+      xhr.onerror = function () { reject(new Error("Зʼєднання перервалося під час завантаження.")); };
+      xhr.send(fd);
+    });
+  }
+
   /* --------------------------------------------------------- image picker */
   function openImagePicker(current, onPick) {
-    openModal("Зображення в теці images/", el("p", { text: "Завантаження…" }));
+    openModal("Зображення — вибрати або завантажити", el("p", { text: "Завантаження…" }));
 
     var ready = state.images
-      ? Promise.resolve({ images: state.images })
-      : api("images").then(function (res) { state.images = res.images; return res; });
+      ? Promise.resolve()
+      : api("images").then(function (res) { state.images = res.images; });
 
-    ready.then(function (res) {
-      var grid = el("div", { class: "img-grid" });
-      res.images.forEach(function (im) {
-        grid.appendChild(el("button", {
-          class: "img-cell" + (im.path === current ? " is-current" : ""),
-          type: "button",
-          onclick: function () { onPick(im.path); closeModal(); }
-        }, [
-          el("img", { src: "../" + im.path, alt: "", loading: "lazy" }),
-          el("span", { text: im.path.replace(/^images\//, "") })
-        ]));
+    ready.then(function () {
+      var fresh = {};                       // uploaded in this sitting → shown first
+      var grid  = el("div", { class: "img-grid" });
+      var queue = el("div", { class: "up-queue" });
+
+      function choose(path) { onPick(path); closeModal(); }
+
+      function renderGrid() {
+        grid.innerHTML = "";
+        if (!state.images.length) {
+          grid.appendChild(el("p", { class: "field-note", text: "Тут поки немає зображень — завантажте перше." }));
+          return;
+        }
+        state.images.slice().sort(function (a, b) {
+          var fa = fresh[a.path] ? 0 : 1, fb = fresh[b.path] ? 0 : 1;
+          return fa !== fb ? fa - fb : a.path.localeCompare(b.path);
+        }).forEach(function (im) {
+          grid.appendChild(el("button", {
+            class: "img-cell" + (im.path === current ? " is-current" : "") + (fresh[im.path] ? " is-new" : ""),
+            type: "button",
+            title: im.path + " · " + humanSize(im.size),
+            onclick: function () { choose(im.path); }
+          }, [
+            el("img", { src: "../" + im.path, alt: "", loading: "lazy" }),
+            el("span", { text: im.path.replace(/^images\//, "") })
+          ]));
+        });
+      }
+
+      /* Files go up one at a time: a single rejected photo then fails on its
+         own line instead of taking the rest of the batch down with it. */
+      function upload(files) {
+        var picked = Array.prototype.slice.call(files || []);
+        if (!picked.length) return;
+
+        var done  = [];
+        var chain = Promise.resolve();
+
+        picked.forEach(function (file) {
+          var bar   = el("i");
+          var label = el("span", { class: "up-state", text: "у черзі" });
+          var line  = el("div", { class: "up-item" }, [
+            el("span", { class: "up-name", text: file.name + " · " + humanSize(file.size) }),
+            el("span", { class: "up-bar" }, [bar]),
+            label
+          ]);
+          queue.appendChild(line);
+
+          chain = chain.then(function () {
+            label.textContent = "0 %";
+            return apiUpload(file, function (p) {
+              var pct = Math.round(p * 100);
+              bar.style.width = pct + "%";
+              label.textContent = pct + " %";
+            }).then(function (image) {
+              bar.style.width = "100%";
+              line.classList.add("is-done");
+              label.textContent = image.resized
+                ? "готово · зменшено до " + image.width + "×" + image.height
+                : "готово";
+              fresh[image.path] = true;
+              state.images.unshift(image);
+              done.push(image);
+              renderGrid();
+            }).catch(function (err) {
+              line.classList.add("is-err");
+              label.textContent = err.message;
+              if (err.payload && err.payload.relogin) handleApiError(err);
+            });
+          });
+        });
+
+        chain.then(function () {
+          if (done.length === 1) {
+            toast("Фото завантажено", "ok");
+            choose(done[0].path);           // one file → almost certainly the one wanted
+          } else if (done.length > 1) {
+            toast(done.length + " фото завантажено — виберіть потрібне", "ok");
+          }
+        });
+      }
+
+      var input = el("input", { type: "file", accept: UPLOAD_ACCEPT, multiple: true, class: "up-input" });
+      input.addEventListener("change", function () {
+        upload(input.files);
+        input.value = "";                   // so the same file can be picked twice
       });
 
-      var body = el("div", {}, [
-        el("p", { class: "field-note", text: "Нові фото завантажуються по FTP у теку images/projects/ — після цього вони з'являться тут." }),
-        res.images.length ? grid : el("p", { text: "У теці images/ немає зображень." })
+      var zone = el("div", { class: "up-zone" }, [
+        el("button", {
+          class: "btn btn-sm", type: "button", text: "Вибрати фото з комп'ютера",
+          onclick: function () { input.click(); }
+        }),
+        el("p", { class: "up-hint", text: "або перетягніть файли сюди · JPG, PNG, WebP · до 20 МБ" }),
+        el("p", { class: "up-hint up-hint-quiet", text: "Великі фото автоматично зменшуються до 2560 px по довшій стороні." }),
+        input
       ]);
-      setModalBody(body);
+
+      ["dragenter", "dragover"].forEach(function (ev) {
+        zone.addEventListener(ev, function (e) { e.preventDefault(); zone.classList.add("is-over"); });
+      });
+      ["dragleave", "dragend", "drop"].forEach(function (ev) {
+        zone.addEventListener(ev, function (e) { e.preventDefault(); zone.classList.remove("is-over"); });
+      });
+      zone.addEventListener("drop", function (e) {
+        if (e.dataTransfer && e.dataTransfer.files) upload(e.dataTransfer.files);
+      });
+
+      renderGrid();
+      setModalBody(el("div", { class: "up-wrap" }, [zone, queue, grid]));
     }).catch(handleApiError);
   }
 
@@ -1095,6 +1235,14 @@
     });
 
     $all("[data-close]").forEach(function (n) { n.addEventListener("click", closeModal); });
+
+    /* A file dropped anywhere but the upload zone would otherwise make the
+       browser navigate to it, throwing away every unsaved edit on the page. */
+    ["dragover", "drop"].forEach(function (ev) {
+      document.addEventListener(ev, function (e) {
+        if (!e.target.closest || !e.target.closest(".up-zone")) e.preventDefault();
+      });
+    });
 
     document.addEventListener("keydown", function (e) {
       if (e.key === "Escape" && !$("#modal").hidden) closeModal();

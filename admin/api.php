@@ -8,6 +8,7 @@
      GET  ?action=backups&file=…
      POST  action=save     { file, items }
      POST  action=restore  { file, stamp }
+     POST  action=upload   multipart: csrf, file, name
      POST  action=logout
    ========================================================================== */
 declare(strict_types=1);
@@ -16,6 +17,7 @@ define('HB_ADMIN', true);
 require __DIR__ . '/lib/bootstrap.php';
 require __DIR__ . '/lib/auth.php';
 require __DIR__ . '/lib/schema.php';
+require __DIR__ . '/lib/upload.php';
 
 header('X-Frame-Options: DENY');
 header('Referrer-Policy: same-origin');
@@ -27,11 +29,25 @@ if (!hb_is_logged_in()) {
 $method = $_SERVER['REQUEST_METHOD'] ?? 'GET';
 $body   = [];
 if ($method === 'POST') {
-    $raw  = file_get_contents('php://input') ?: '';
-    $body = json_decode($raw, true);
-    if (!is_array($body)) {
-        hb_json_fail('Некоректний запит.');
+    /* Uploads arrive as multipart, everything else as a JSON body. */
+    $isMultipart = stripos((string)($_SERVER['CONTENT_TYPE'] ?? ''), 'multipart/form-data') === 0;
+
+    if ($isMultipart) {
+        /* A body over post_max_size is discarded by PHP before it gets here,
+           leaving both superglobals empty — report that instead of blaming
+           the CSRF token the browser did send. */
+        if (!$_POST && !$_FILES && (int)($_SERVER['CONTENT_LENGTH'] ?? 0) > 0) {
+            hb_json_fail('Файл завеликий для сервера. Спробуйте менший.', 413);
+        }
+        $body = $_POST;
+    } else {
+        $raw  = file_get_contents('php://input') ?: '';
+        $body = json_decode($raw, true);
+        if (!is_array($body)) {
+            hb_json_fail('Некоректний запит.');
+        }
     }
+
     if (!hb_csrf_check($body['csrf'] ?? null)) {
         hb_json_fail('Токен безпеки застарів. Оновіть сторінку.', 403, ['relogin' => true]);
     }
@@ -142,6 +158,28 @@ switch ($action) {
         }
         usort($found, fn($a, $b) => strcmp($a['path'], $b['path']));
         hb_json_out(['ok' => true, 'images' => $found]);
+    }
+
+    /* ------------------------------------------------------------- upload */
+    case 'upload': {
+        if ($method !== 'POST') {
+            hb_json_fail('Завантаження приймається лише через POST.', 405);
+        }
+        $file = $_FILES['file'] ?? null;
+        if (!is_array($file)) {
+            hb_json_fail('Файл не надіслано.');
+        }
+        /* One file per request: the panel sends them one after another so a
+           single bad photo cannot fail the whole batch. */
+        if (is_array($file['name'] ?? null)) {
+            hb_json_fail('Надсилайте по одному файлу за раз.');
+        }
+        try {
+            $image = hb_upload_store($file, (string)($body['name'] ?? ''));
+        } catch (HbValidationError $e) {
+            hb_json_fail($e->getMessage(), 422);
+        }
+        hb_json_out(['ok' => true, 'image' => $image]);
     }
 
     /* ------------------------------------------------------------ backups */

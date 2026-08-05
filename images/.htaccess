@@ -1,0 +1,22 @@
+# Visitor-facing images, and the folder the admin panel uploads into.
+#
+# The upload route only ever writes .jpg/.png/.webp and derives that extension
+# from the file's actual bytes, so nothing executable should be able to land
+# here in the first place. This is the second lock on the same door: even if a
+# script did arrive, it may not be requested and must not be run.
+
+Options -Indexes -ExecCGI
+
+<FilesMatch "\.(php|php[0-9]|phtml|phps|phar|inc|cgi|pl|py|sh|bash|htaccess|htpasswd)$">
+  <IfModule mod_authz_core.c>
+    Require all denied
+  </IfModule>
+  <IfModule !mod_authz_core.c>
+    Order allow,deny
+    Deny from all
+  </IfModule>
+</FilesMatch>
+
+<IfModule mod_php.c>
+  php_flag engine off
+</IfModule>

@@ -499,6 +499,60 @@ textarea { resize: vertical; min-height: 84px; line-height: 1.55; }
   color: var(--ink-soft);
   word-break: break-all;
 }
+/* Just uploaded — the grid puts these first, the ring says why. */
+.img-cell.is-new { border-color: var(--gold); box-shadow: 0 0 0 2px rgba(185,141,63,.18); }
+
+/* ============================= uploading ============================ */
+.up-wrap { display: flex; flex-direction: column; gap: 16px; }
+
+.up-zone {
+  border: 1.5px dashed var(--line);
+  border-radius: 12px;
+  padding: 20px 16px;
+  text-align: center;
+  background: #fcfbf8;
+  transition: border-color .15s, background .15s;
+}
+.up-zone.is-over { border-color: var(--gold); background: rgba(185,141,63,.07); }
+.up-hint { margin: 9px 0 0; font-size: 12px; color: var(--ink-soft); }
+.up-hint-quiet { margin-top: 3px; opacity: .75; }
+.up-input { display: none; }
+
+.up-queue:empty { display: none; }
+.up-queue { display: flex; flex-direction: column; gap: 8px; }
+.up-item {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 110px auto;
+  align-items: center;
+  gap: 12px;
+  font-size: 12px;
+  padding: 8px 10px;
+  border: 1px solid var(--line);
+  border-radius: 9px;
+  background: #fff;
+}
+.up-name { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.up-bar {
+  height: 5px;
+  border-radius: 999px;
+  background: #ece8df;
+  overflow: hidden;
+}
+.up-bar i { display: block; height: 100%; width: 0; background: var(--gold); transition: width .12s linear; }
+.up-state { color: var(--ink-soft); white-space: nowrap; font-variant-numeric: tabular-nums; }
+
+.up-item.is-done { border-color: rgba(60,140,80,.4); }
+.up-item.is-done .up-bar i { background: #3c8c50; }
+.up-item.is-done .up-state { color: #3c8c50; }
+
+.up-item.is-err { border-color: rgba(180,60,50,.45); background: #fdf6f5; }
+.up-item.is-err .up-bar { visibility: hidden; }
+.up-item.is-err .up-state { color: #b43c32; white-space: normal; }
+
+@media (max-width: 640px) {
+  .up-item { grid-template-columns: minmax(0, 1fr) auto; }
+  .up-item .up-bar { grid-column: 1 / -1; }
+}
 
 .backup-list { list-style: none; margin: 0; padding: 0; }
 .backup-list li {
