@@ -1,132 +1,132 @@
 [
-  {
-    "id": "svc-1",
-    "title": {
-      "nl": "Uitbreidingen",
-      "en": "Extensions"
+    {
+        "id": "svc-1",
+        "title": {
+            "nl": "Uitbreidingen",
+            "en": "Extensions"
+        },
+        "desc": {
+            "nl": "Aanbouw, uitbreiding van woonruimte en praktische oplossingen voor meer comfort en functionaliteit.",
+            "en": "Add-ons, extra living space and practical solutions for more comfort and functionality."
+        },
+        "image": "images/projects/extension-5.png",
+        "href": "#contact"
     },
-    "desc": {
-      "nl": "Aanbouw, uitbreiding van woonruimte en praktische oplossingen voor meer comfort en functionaliteit.",
-      "en": "Add-ons, extra living space and practical solutions for more comfort and functionality."
+    {
+        "id": "svc-2",
+        "title": {
+            "nl": "Bouwprojecten",
+            "en": "Construction projects"
+        },
+        "desc": {
+            "nl": "Complete begeleiding en uitvoering van bouwprojecten met duidelijke planning en kwaliteitscontrole.",
+            "en": "Complete guidance and execution of construction projects with clear planning and quality control."
+        },
+        "image": "images/projects/extension-6.png",
+        "href": "#contact"
     },
-    "image": "images/projects/extension-1.jpg",
-    "href": "#contact"
-  },
-  {
-    "id": "svc-2",
-    "title": {
-      "nl": "Bouwprojecten",
-      "en": "Construction projects"
+    {
+        "id": "svc-3",
+        "title": {
+            "nl": "Huisontwerp",
+            "en": "Home design"
+        },
+        "desc": {
+            "nl": "Ontwerp, indeling en visualisatie van ruimtes afgestemd op uw wensen en levensstijl.",
+            "en": "Design, layout and visualisation of spaces tailored to your wishes and lifestyle."
+        },
+        "image": "images/projects/living-1.jpg",
+        "href": "#contact"
     },
-    "desc": {
-      "nl": "Complete begeleiding en uitvoering van bouwprojecten met duidelijke planning en kwaliteitscontrole.",
-      "en": "Complete guidance and execution of construction projects with clear planning and quality control."
+    {
+        "id": "svc-4",
+        "title": {
+            "nl": "Kozijnen vervangen",
+            "en": "Window replacement"
+        },
+        "desc": {
+            "nl": "Professionele vervanging van ramen en kozijnen voor betere isolatie, uitstraling en comfort.",
+            "en": "Professional replacement of windows and frames for better insulation, looks and comfort."
+        },
+        "image": "images/projects/windows-2.png",
+        "href": "#contact"
     },
-    "image": "images/projects/extension-6.png",
-    "href": "#contact"
-  },
-  {
-    "id": "svc-3",
-    "title": {
-      "nl": "Huisontwerp",
-      "en": "Home design"
+    {
+        "id": "svc-5",
+        "title": {
+            "nl": "Badkamerrenovatie",
+            "en": "Bathroom renovation"
+        },
+        "desc": {
+            "nl": "Complete renovatie van badkamers — van leidingwerk tot tegelwerk en afwerking.",
+            "en": "Complete bathroom renovation — from plumbing to tiling and finishing."
+        },
+        "image": "images/projects/bathroom-1.jpg",
+        "href": "#contact"
     },
-    "desc": {
-      "nl": "Ontwerp, indeling en visualisatie van ruimtes afgestemd op uw wensen en levensstijl.",
-      "en": "Design, layout and visualisation of spaces tailored to your wishes and lifestyle."
+    {
+        "id": "svc-6",
+        "title": {
+            "nl": "Gevelrenovatie",
+            "en": "Facade renovation"
+        },
+        "desc": {
+            "nl": "Herstel, renovatie en verbetering van gevels met oog voor duurzaamheid en uitstraling.",
+            "en": "Repair, renovation and improvement of facades with an eye for durability and appearance."
+        },
+        "image": "images/projects/facade-denhaag.png",
+        "href": "#contact"
     },
-    "image": "images/projects/living-1.jpg",
-    "href": "#contact"
-  },
-  {
-    "id": "svc-4",
-    "title": {
-      "nl": "Kozijnen vervangen",
-      "en": "Window replacement"
+    {
+        "id": "svc-7",
+        "title": {
+            "nl": "Loodgieterswerk",
+            "en": "Plumbing"
+        },
+        "desc": {
+            "nl": "Betrouwbare installatie, vervanging en reparatie van waterleidingen, sanitair en afvoer.",
+            "en": "Reliable installation, replacement and repair of water pipes, sanitary ware and drainage."
+        },
+        "image": "images/projects/plumbing-1.png",
+        "href": "#contact"
     },
-    "desc": {
-      "nl": "Professionele vervanging van ramen en kozijnen voor betere isolatie, uitstraling en comfort.",
-      "en": "Professional replacement of windows and frames for better insulation, looks and comfort."
+    {
+        "id": "svc-8",
+        "title": {
+            "nl": "Elektrische werkzaamheden",
+            "en": "Electrical work"
+        },
+        "desc": {
+            "nl": "Elektramontage, aansluitingen en aanpassingen volgens professionele normen.",
+            "en": "Electrical installation, connections and adjustments to professional standards."
+        },
+        "image": "images/projects/living-2.png",
+        "href": "#contact"
     },
-    "image": "images/projects/extension-4.png",
-    "href": "#contact"
-  },
-  {
-    "id": "svc-5",
-    "title": {
-      "nl": "Badkamerrenovatie",
-      "en": "Bathroom renovation"
+    {
+        "id": "svc-9",
+        "title": {
+            "nl": "Structurele wijzigingen",
+            "en": "Structural changes"
+        },
+        "desc": {
+            "nl": "Aanpassingen aan indeling, wanden en constructieve elementen met veilige uitvoering.",
+            "en": "Adjustments to layout, walls and structural elements with safe execution."
+        },
+        "image": "images/projects/extension-3.jpg",
+        "href": "#contact"
     },
-    "desc": {
-      "nl": "Complete renovatie van badkamers — van leidingwerk tot tegelwerk en afwerking.",
-      "en": "Complete bathroom renovation — from plumbing to tiling and finishing."
-    },
-    "image": "images/projects/bathroom-1.jpg",
-    "href": "#contact"
-  },
-  {
-    "id": "svc-6",
-    "title": {
-      "nl": "Gevelrenovatie",
-      "en": "Facade renovation"
-    },
-    "desc": {
-      "nl": "Herstel, renovatie en verbetering van gevels met oog voor duurzaamheid en uitstraling.",
-      "en": "Repair, renovation and improvement of facades with an eye for durability and appearance."
-    },
-    "image": "images/projects/extension-5.png",
-    "href": "#contact"
-  },
-  {
-    "id": "svc-7",
-    "title": {
-      "nl": "Loodgieterswerk",
-      "en": "Plumbing"
-    },
-    "desc": {
-      "nl": "Betrouwbare installatie, vervanging en reparatie van waterleidingen, sanitair en afvoer.",
-      "en": "Reliable installation, replacement and repair of water pipes, sanitary ware and drainage."
-    },
-    "image": "images/projects/bathroom-3.jpg",
-    "href": "#contact"
-  },
-  {
-    "id": "svc-8",
-    "title": {
-      "nl": "Elektrische werkzaamheden",
-      "en": "Electrical work"
-    },
-    "desc": {
-      "nl": "Elektramontage, aansluitingen en aanpassingen volgens professionele normen.",
-      "en": "Electrical installation, connections and adjustments to professional standards."
-    },
-    "image": "images/projects/living-2.png",
-    "href": "#contact"
-  },
-  {
-    "id": "svc-9",
-    "title": {
-      "nl": "Structurele wijzigingen",
-      "en": "Structural changes"
-    },
-    "desc": {
-      "nl": "Aanpassingen aan indeling, wanden en constructieve elementen met veilige uitvoering.",
-      "en": "Adjustments to layout, walls and structural elements with safe execution."
-    },
-    "image": "images/projects/extension-3.jpg",
-    "href": "#contact"
-  },
-  {
-    "id": "svc-10",
-    "title": {
-      "nl": "Isolatiewerkzaamheden",
-      "en": "Insulation work"
-    },
-    "desc": {
-      "nl": "Isolatie-oplossingen voor betere energieprestaties, comfort en lagere kosten.",
-      "en": "Insulation solutions for better energy performance, comfort and lower costs."
-    },
-    "image": "images/projects/bathroom-5.jpg",
-    "href": "#contact"
-  }
+    {
+        "id": "svc-10",
+        "title": {
+            "nl": "Isolatiewerkzaamheden",
+            "en": "Insulation work"
+        },
+        "desc": {
+            "nl": "Isolatie-oplossingen voor betere energieprestaties, comfort en lagere kosten.",
+            "en": "Insulation solutions for better energy performance, comfort and lower costs."
+        },
+        "image": "images/projects/insulation-1.png",
+        "href": "#contact"
+    }
 ]

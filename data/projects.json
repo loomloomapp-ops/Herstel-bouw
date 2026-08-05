@@ -283,7 +283,7 @@
             "en": "Facade renovation in The Hague"
         },
         "location": "South Holland",
-        "cover": "images/projects/extension-5.png",
+        "cover": "images/projects/facade-denhaag.png",
         "short": {
             "nl": "Herstel van metselwerk, nieuw voegwerk en gevelisolatie voor een duurzamere en frissere uitstraling.",
             "en": "Masonry repair, new pointing and facade insulation for a more durable, fresher appearance."
@@ -367,8 +367,8 @@
             "en": "Bathroom renovation"
         },
         "title": {
-            "nl": "Wellness-badkamer in Noord-Holland",
-            "en": "Wellness bathroom in North Holland"
+            "nl": "Badkamerverbetering",
+            "en": "Bathroom improvement"
         },
         "location": "North Holland",
         "cover": "images/projects/bathroom-6.jpg",
@@ -461,7 +461,7 @@
             "en": "Window replacement, Utrecht region"
         },
         "location": "Utrecht regio",
-        "cover": "images/projects/extension-4.png",
+        "cover": "images/projects/windows-1.png",
         "short": {
             "nl": "Vervanging van alle kozijnen door geïsoleerd kunststof met behoud van de oorspronkelijke gevelindeling.",
             "en": "Replacement of all window frames with insulated frames, keeping the original facade layout."
