@@ -705,6 +705,29 @@
   function initYear() { $all("[data-year]").forEach(function (e) { e.textContent = "2026"; }); }
 
   /* ---------- boot ---------- */
+  /* A link to #partners lands on the top of the page: the section carries
+     `hidden` until the fetch proves there is something to show, and the
+     browser has already given up on the fragment by the time it is revealed.
+     Same for anything else that only exists once the data has arrived — so
+     the jump is re-run here, after the first render. */
+  function honourHash() {
+    var hash = window.location.hash;
+    if (!hash || hash.length < 2) return;
+    var target;
+    try { target = document.querySelector(hash); } catch (e) { return; }
+    if (!target || target.hidden) return;
+
+    /* The intro overlay holds the page for at least 1.1 s; scrolling before
+       it lets go gets undone. Wait for load, then give it that beat. */
+    function jump() {
+      setTimeout(function () {
+        target.scrollIntoView({ behavior: "smooth", block: "start" });
+      }, 1250);
+    }
+    if (document.readyState === "complete") jump();
+    else window.addEventListener("load", jump, { once: true });
+  }
+
   function boot() {
     cacheStaticText();
     initNav();
@@ -718,6 +741,7 @@
     applyLang(lang);   /* also renders dynamic blocks */
     initReveal();
     initGallery();
+    honourHash();
   }
 
   document.addEventListener("DOMContentLoaded", function () {
