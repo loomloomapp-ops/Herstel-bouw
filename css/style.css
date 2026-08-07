@@ -740,9 +740,7 @@ a.partner-card:hover .partner-ico { transform: translate(3px, -3px); }
 @media (max-width: 1080px) {
   .partner-grid { grid-template-columns: repeat(2, 1fr); }
 }
-@media (max-width: 560px) {
-  .partner-grid { grid-template-columns: 1fr; }
-}
+/* Below 760px this becomes a swipe slider — see the mobile block. */
 
 /* ==========================================================================
    Testimonials
@@ -1277,6 +1275,23 @@ body[data-page="legal"] main .section { padding-block: clamp(3rem, 5.5vw, 5.5rem
   #testi-grid::-webkit-scrollbar { display: none; }
   #testi-grid .testi-card { flex: 0 0 88%; scroll-snap-align: start; }
   .testi-dots { margin-top: 1.3rem; }
+
+  /* ----- Partners: horizontal swipe slider -----
+     Same gesture as the reviews above it: four stacked cards would push the
+     FAQ most of a screen further down for no gain. The card stops short of
+     the full width so the edge of the next one shows there is more. */
+  #partner-grid {
+    display: flex; grid-template-columns: none; gap: 1rem;
+    margin-top: clamp(2rem, 5vw, 2.5rem);
+    overflow-x: auto; scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch; scrollbar-width: none;
+  }
+  #partner-grid::-webkit-scrollbar { display: none; }
+  #partner-grid .partner-card { flex: 0 0 82%; scroll-snap-align: start; }
+  /* Lift-on-hover is a pointer idiom; on a touch screen it only ever fires
+     mid-swipe and drags the card out of line. */
+  a.partner-card:hover { transform: none; box-shadow: none; }
+  a.partner-card:hover .partner-media img { transform: none; }
 
   /* ----- Footer: centred ----- */
   .footer-top { align-items: center; text-align: center; }
