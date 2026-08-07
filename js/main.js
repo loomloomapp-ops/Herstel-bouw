@@ -4,10 +4,11 @@
 (function () {
   "use strict";
 
-  /* Where form submissions are delivered. FormSubmit relays to the inbox
-     below with no backend. The first submission triggers a one-time
-     activation email to herstelenbouw@gmail.com — confirm it once. */
-  var FORM_ENDPOINT = "https://formsubmit.co/ajax/herstelenbouw@gmail.com";
+  /* Where form submissions are delivered. The endpoint lives on this domain
+     and mails every lead to the owner's inbox, so delivery does not depend on
+     a third-party relay staying activated. It also keeps a private copy in
+     admin/storage/leads.php as a fallback. */
+  var FORM_ENDPOINT = "/lead-submit.php";
 
   var EN = window.HB_EN || {};
   var nlCache = {};          /* data-i18n key -> original Dutch text */
@@ -329,7 +330,7 @@
     show(0);
   }
 
-  /* ---------- forms (FormSubmit, no backend) ---------- */
+  /* ---------- forms (lead-submit.php) ---------- */
   function submitForm(form) {
     if (!form) return;
     var status = form.querySelector(".form-status") || form.parentElement.querySelector(".form-status");
@@ -338,7 +339,7 @@
     if (typeof form.reportValidity === "function" && !form.checkValidity()) { form.reportValidity(); return; }
     var data = new FormData(form);
     data.append("_subject", "Herstel & Bouw — " + (form.getAttribute("data-subject") || "Nieuwe aanvraag"));
-    data.append("_template", "table");
+    data.append("lang", lang);
     if (btn) btn.disabled = true;
     if (status) { status.className = "form-status"; status.textContent = ""; }
     fetch(FORM_ENDPOINT, { method: "POST", body: data, headers: { Accept: "application/json" } })
@@ -347,8 +348,11 @@
         var ok = res && (res.success === true || res.success === "true");
         if (status) {
           status.classList.add(ok ? "ok" : "err");
-          status.textContent = ok ? (lang === "en" ? EN["form.ok"] : nlCache["form.ok"] || "Bedankt. Uw aanvraag is verstuurd.")
-                                   : (lang === "en" ? EN["form.err"] : nlCache["form.err"] || "Er ging iets mis. Bel of WhatsApp ons.");
+          /* The endpoint explains *why* it refused (throttled, missing field),
+             which is more useful than the generic notice. */
+          status.textContent = (res && res.message) ? res.message
+            : ok ? (lang === "en" ? EN["form.ok"] : nlCache["form.ok"] || "Bedankt. Uw aanvraag is verstuurd.")
+                 : (lang === "en" ? EN["form.err"] : nlCache["form.err"] || "Er ging iets mis. Bel of WhatsApp ons.");
         }
         if (ok) form.reset();
       })
