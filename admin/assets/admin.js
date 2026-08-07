@@ -33,10 +33,10 @@
 
   var state = {
     tab: "services",
-    data:   { services: null, projects: null, reviews: null },
-    mtime:  { services: 0,    projects: 0,     reviews: 0 },
-    dirty:  { services: false, projects: false, reviews: false },
-    sel:    { services: 0,    projects: 0,     reviews: 0 },
+    data:   { services: null, projects: null, reviews: null, partners: null },
+    mtime:  { services: 0,    projects: 0,     reviews: 0,    partners: 0 },
+    dirty:  { services: false, projects: false, reviews: false, partners: false },
+    sel:    { services: 0,    projects: 0,     reviews: 0,    partners: 0 },
     filter: "",
     status: "all",          /* reviews tab: moderation filter */
     images: null
@@ -135,7 +135,7 @@
   }
 
   function anyDirty() {
-    return state.dirty.services || state.dirty.projects || state.dirty.reviews;
+    return state.dirty.services || state.dirty.projects || state.dirty.reviews || state.dirty.partners;
   }
 
   function paintState() {
@@ -146,7 +146,7 @@
     $("#btn-save").disabled = !dirty;
     $("#btn-revert").disabled = !dirty;
 
-    ["services", "projects", "reviews"].forEach(function (k) {
+    ["services", "projects", "reviews", "partners"].forEach(function (k) {
       var chip = $('[data-count="' + k + '"]');
       if (chip) chip.textContent = state.data[k] ? state.data[k].length : "—";
       var tab = $('.tab[data-tab="' + k + '"]');
@@ -173,6 +173,16 @@
       desc:  { nl: "", en: "" },
       image: "images/projects/extension-1.jpg",
       href: "#contact"
+    };
+  }
+
+  function blankPartner() {
+    return {
+      id: "", _new: true,
+      name: "",
+      desc: { nl: "", en: "" },
+      image: "",
+      url: ""
     };
   }
 
@@ -492,7 +502,7 @@
       ]));
       return;
     }
-    var editors = { services: serviceEditor, projects: projectEditor, reviews: reviewEditor };
+    var editors = { services: serviceEditor, projects: projectEditor, reviews: reviewEditor, partners: partnerEditor };
     editors[state.tab](host, item);
   }
 
@@ -551,6 +561,41 @@
     host.appendChild(idCard(s, "послуги", function () { refreshListRow(idx); }));
   }
 
+  /* ------------------------------------------------------ partner editor */
+  function partnerEditor(host, p) {
+    var idx = state.sel.partners;
+
+    host.appendChild(editorHead(
+      p.name || "Новий партнер",
+      "Позиція " + (idx + 1) + " у блоці «Onze partners» на головній.",
+      function () { deleteCurrent("Партнера"); }
+    ));
+
+    var card = el("div", { class: "card" }, [
+      el("h3", { text: "Партнер" }),
+      el("p", { class: "card-hint", text: "Назва компанії однакова обома мовами — її не перекладають. Опис перекладається." })
+    ]);
+    card.appendChild(textField("Назва", p.name, function (v) {
+      p.name = v; markDirty(); refreshListRow(idx);
+    }, { placeholder: "Bouwbedrijf De Vries" }));
+    card.appendChild(langPair("Опис", p.desc, { multiline: true, rows: 3 }));
+    host.appendChild(card);
+
+    var media = el("div", { class: "card" }, [el("h3", { text: "Фото та посилання" })]);
+    media.appendChild(imageField("Фото", p.image, function (v) {
+      p.image = v; markDirty(); refreshListRow(idx);
+    }, "Показується вгорі картки. Найкраще горизонтальне — картка обрізає під 4:3."));
+    media.appendChild(textField("Сайт партнера", p.url, function (v) {
+      p.url = v; markDirty();
+    }, {
+      placeholder: "https://example.nl",
+      note: "Клік по картці відкриє цю адресу в новій вкладці. Можна лишити порожнім — тоді картка просто не буде посиланням."
+    }));
+    host.appendChild(media);
+
+    host.appendChild(idCard(p, "партнера", function () { refreshListRow(idx); }));
+  }
+
   /* The id is not user-facing for services, but it is the URL for projects —
      hence the different warning text. */
   function idCard(item, what, onChange) {
@@ -564,7 +609,7 @@
       placeholder: "auto",
       note: isProject
         ? "Використовується в адресі сторінки: project.html?id=" + (item.id || "…") + ". Зміна id зламає всі наявні посилання на цей проєкт."
-        : "Технічна назва " + what + ". Порожнє поле — згенерується з голландської назви.",
+        : "Технічна назва " + what + ". Порожнє поле — згенерується з назви.",
       warn: isProject
     }));
     return card;
@@ -925,6 +970,9 @@
     if (state.tab === "services") {
       return { title: item.title.nl || "(без назви)", sub: item.desc.nl || "—", img: item.image };
     }
+    if (state.tab === "partners") {
+      return { title: item.name || "(без назви)", sub: item.desc.nl || "—", img: item.image };
+    }
     if (state.tab === "reviews") {
       return {
         title: item.name || "(без імені)",
@@ -1038,6 +1086,9 @@
         if (which === "services") {
           return { id: it.id || "", title: pair(it.title), desc: pair(it.desc), image: it.image || "", href: it.href || "#contact" };
         }
+        if (which === "partners") {
+          return { id: it.id || "", name: it.name || "", desc: pair(it.desc), image: it.image || "", url: it.url || "" };
+        }
         var m = it.meta || {};
         return {
           id: it.id || "",
@@ -1129,7 +1180,7 @@
   /* ============================================================== history */
   function openHistory() {
     var which = state.tab;
-    var names = { services: "послуги", projects: "проєкти", reviews: "відгуки" };
+    var names = { services: "послуги", projects: "проєкти", reviews: "відгуки", partners: "партнери" };
     openModal("Резервні копії — " + names[which], el("p", { text: "Завантаження…" }));
 
     api("backups", { query: { file: which } }).then(function (res) {
@@ -1180,7 +1231,7 @@
     state.tab = which;
     $all(".tab").forEach(function (t) { t.classList.toggle("is-active", t.getAttribute("data-tab") === which); });
     $("#filter").value = state.filter = "";
-    var labels = { services: "+ Послуга", projects: "+ Проєкт", reviews: "+ Відгук" };
+    var labels = { services: "+ Послуга", projects: "+ Проєкт", reviews: "+ Відгук", partners: "+ Партнер" };
     $("#btn-add").textContent = labels[which];
     var bar = $("#status-bar");
     if (bar) bar.hidden = which !== "reviews";
@@ -1199,7 +1250,7 @@
     $("#btn-add").addEventListener("click", function () {
       var list = state.data[state.tab];
       if (!list) return;
-      var blanks = { services: blankService, projects: blankProject, reviews: blankReview };
+      var blanks = { services: blankService, projects: blankProject, reviews: blankReview, partners: blankPartner };
       list.unshift(blanks[state.tab]());
       state.sel[state.tab] = 0;
       markDirty();

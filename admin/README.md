@@ -39,6 +39,14 @@
 самі через форму на сайті; на сайт вони потрапляють лише після вашого
 підтвердження.
 
+**Партнери** — блок «Onze partners» під відгуками. Назва компанії, опис
+двома мовами, фото й адреса сайту. Клік по картці відкриває сайт партнера
+в новій вкладці. Поки жодного партнера не додано, блок на сайті не
+показується взагалі — порожньої смуги із заголовком не буде.
+
+Адресу можна писати без `https://` — панель допише сама. Поле можна лишити
+порожнім: тоді картка просто не буде посиланням.
+
 Зміни застосовуються на сайті одразу після натискання **Зберегти**.
 
 ## Завантаження фото
@@ -131,7 +139,8 @@
 
 ```
 data/services.json      data/reviews.json
-data/projects.json      admin/storage/reviews.php
+data/projects.json      data/partners.json
+admin/storage/reviews.php
 ```
 
 Перевірити: `git ls-files -v | grep '^S'`
@@ -173,6 +182,7 @@ ssh сервер 'cd .../public_html && git update-index --skip-worktree data/se
 data/
   services.json        дані блоку «Onze diensten»
   projects.json        дані проєктів
+  partners.json        дані блоку «Onze partners»
   .backups/            автоматичні копії
 admin/
   index.php            вхід і оболонка панелі

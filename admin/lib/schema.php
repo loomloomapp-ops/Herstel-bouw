@@ -142,6 +142,72 @@ function hb_sanitize_services($input): array
     return $out;
 }
 
+/* ---------- partners ----------
+   A partner card is a picture that links off-site, so the URL is the one
+   field an attacker would want to control. Only http(s) is allowed through;
+   anything else — javascript:, data:, a bare word — is refused rather than
+   quietly rewritten, because a silently mangled link looks like it works. */
+function hb_external_url($v, string $label): string
+{
+    $u = hb_str($v, 500);
+    if ($u === '') {
+        return '';                      // optional: a partner without a site
+    }
+    if (!preg_match('~^https?://~i', $u)) {
+        /* The most common mistake by far is typing the bare domain. */
+        if (preg_match('~^[a-z0-9.-]+\.[a-z]{2,}(/|$)~i', $u)) {
+            $u = 'https://' . $u;
+        } else {
+            hb_fail_field("Посилання «{$label}» має починатися з https:// (отримано: {$u}).");
+        }
+    }
+    if (!filter_var($u, FILTER_VALIDATE_URL)) {
+        hb_fail_field("Посилання «{$label}» не схоже на адресу сайту.");
+    }
+    return $u;
+}
+
+function hb_sanitize_partners($input): array
+{
+    if (!is_array($input)) {
+        hb_fail_field('Очікувався список партнерів.');
+    }
+    if (count($input) > 60) {
+        hb_fail_field('Забагато партнерів (максимум 60).');
+    }
+
+    $out  = [];
+    $seen = [];
+    foreach (array_values($input) as $i => $raw) {
+        if (!is_array($raw)) {
+            continue;
+        }
+        $n = $i + 1;
+
+        /* A company name is a proper noun — the same in both languages. */
+        $name = hb_str($raw['name'] ?? '', 120);
+        if ($name === '') {
+            hb_fail_field("Партнер №{$n}: не заповнено назву.");
+        }
+
+        $id = hb_str($raw['id'] ?? '', 80);
+        $id = $id !== '' ? hb_slug($id, "Партнер №{$n}") : hb_slug($name, "Партнер №{$n}");
+        while (isset($seen[$id])) {
+            $id .= '-2';
+        }
+        $seen[$id] = true;
+
+        $out[] = [
+            'id'    => $id,
+            'name'  => $name,
+            'desc'  => hb_lang_pair($raw['desc'] ?? '', "Партнер №{$n} — опис", true, 400),
+            'image' => hb_image_path($raw['image'] ?? '', "Партнер №{$n}"),
+            'url'   => hb_external_url($raw['url'] ?? '', "Партнер №{$n}"),
+        ];
+    }
+    return $out;                        // an empty list is fine: the block hides itself
+}
+
 /* ---------- projects ---------- */
 function hb_string_list($v, int $max = 24): array
 {
@@ -355,6 +421,9 @@ function hb_sanitize(string $key, $payload): array
     }
     if ($key === 'reviews') {
         return hb_sanitize_reviews($payload);
+    }
+    if ($key === 'partners') {
+        return hb_sanitize_partners($payload);
     }
     return hb_sanitize_projects($payload);
 }

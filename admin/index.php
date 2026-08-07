@@ -71,7 +71,7 @@ $csrf = hb_csrf_token();
 <meta name="robots" content="noindex, nofollow">
 <title>Herstel &amp; Bouw — панель керування</title>
 <link rel="icon" href="../images/logo-mark.png">
-<link rel="stylesheet" href="assets/admin.css?v=2">
+<link rel="stylesheet" href="assets/admin.css?v=3">
 </head>
 <body class="stage-<?= htmlspecialchars($stage, ENT_QUOTES) ?>">
 
@@ -132,6 +132,7 @@ $csrf = hb_csrf_token();
       <button class="tab is-active" data-tab="services" role="tab">Послуги<span class="tab-count" data-count="services">—</span></button>
       <button class="tab" data-tab="projects" role="tab">Проєкти<span class="tab-count" data-count="projects">—</span></button>
       <button class="tab" data-tab="reviews" role="tab">Відгуки<span class="tab-count" data-count="reviews">—</span></button>
+      <button class="tab" data-tab="partners" role="tab">Партнери<span class="tab-count" data-count="partners">—</span></button>
     </nav>
 
     <div class="topbar-actions">
@@ -182,7 +183,7 @@ $csrf = hb_csrf_token();
   </div>
 
   <script>window.HB_CSRF = <?= json_encode($csrf) ?>;</script>
-  <script src="assets/admin.js?v=2"></script>
+  <script src="assets/admin.js?v=3"></script>
 <?php endif; ?>
 
 </body>

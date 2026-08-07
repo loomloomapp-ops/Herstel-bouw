@@ -653,6 +653,98 @@ body.nav-open .nav-overlay-menu a { opacity: 1; transform: none; }
 .why-media img { width: 100%; height: 100%; object-fit: cover; object-position: left center; }
 
 /* ==========================================================================
+   Partners
+
+   Four cards to a row, each one a link to the partner's own site. The whole
+   card is the anchor — the picture is what people aim at — so the hover
+   state has to lift the entire card rather than underline a word in it.
+   ========================================================================== */
+.partner-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.1rem;
+  margin-top: clamp(2.5rem, 4vw, 3.5rem);
+}
+.partner-card {
+  display: flex;
+  flex-direction: column;
+  background: var(--clr-surface);
+  border: 1px solid var(--clr-line);
+  border-radius: var(--r-lg);
+  overflow: hidden;
+  color: inherit;
+  text-decoration: none;
+  transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+}
+a.partner-card:hover {
+  transform: translateY(-4px);
+  border-color: var(--clr-ink);
+  box-shadow: var(--shadow-card);
+}
+a.partner-card:focus-visible {
+  outline: 2px solid var(--clr-gold);
+  outline-offset: 3px;
+}
+
+.partner-media {
+  display: block;
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
+  background: var(--clr-accent-soft);
+}
+.partner-media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.45s ease;
+}
+a.partner-card:hover .partner-media img { transform: scale(1.05); }
+
+.partner-body {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 1.4rem 1.5rem 1.5rem;
+  flex: 1;
+}
+.partner-name {
+  font-size: 1.1rem;
+  font-weight: 600;
+  letter-spacing: var(--ls-h3);
+  color: var(--clr-ink);
+}
+.partner-desc {
+  font-size: 0.95rem;
+  line-height: 1.55;
+  color: var(--clr-ink-soft);
+}
+/* Pinned to the bottom so the arrows line up across cards whose
+   descriptions run to different lengths. */
+.partner-cta {
+  margin-top: auto;
+  padding-top: 1.1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.78rem;
+  font-weight: 500;
+  letter-spacing: var(--ls-label);
+  text-transform: uppercase;
+  color: var(--clr-ink);
+}
+.partner-ico { display: inline-flex; transition: transform 0.25s ease; }
+.partner-ico svg { width: 0.95rem; height: 0.95rem; }
+a.partner-card:hover .partner-ico { transform: translate(3px, -3px); }
+
+@media (max-width: 1080px) {
+  .partner-grid { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 560px) {
+  .partner-grid { grid-template-columns: 1fr; }
+}
+
+/* ==========================================================================
    Testimonials
    ========================================================================== */
 .testi-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.1rem; margin-top: clamp(2.5rem,4vw,3.5rem); }

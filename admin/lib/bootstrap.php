@@ -21,6 +21,7 @@ define('HB_BACKUPS',  HB_DATA . '/.backups');
 const HB_FILES = [
     'services' => 'services.json',
     'projects' => 'projects.json',
+    'partners' => 'partners.json',
 ];
 
 /* Reviews are moderated, so they live in two places:

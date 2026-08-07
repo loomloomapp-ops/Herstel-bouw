@@ -431,6 +431,50 @@
     initTestimonials();   /* rebuild pagination for the new card set */
   }
 
+  /* ---------- partners rendering ----------
+     Each card is one link off-site, so the whole card is the anchor rather
+     than a small "visit" link — the picture is what people aim at. Partners
+     without a URL still get a card, just not a clickable one. */
+  var PARTNER_ARROW = '<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12 12 4M6 4h6v6"/></svg>';
+
+  function partnerCard(p) {
+    var name = esc(p.name || "");
+    var desc = esc(pick(p.desc));
+    var url  = String(p.url || "");
+    var linked = /^https?:\/\//i.test(url);
+
+    var inner =
+      '<span class="partner-media"><img src="' + esc(p.image || "") + '" alt="' + name + '" loading="lazy" /></span>' +
+      '<span class="partner-body">' +
+        '<span class="partner-name">' + name + '</span>' +
+        '<span class="partner-desc">' + desc + '</span>' +
+        (linked
+          ? '<span class="partner-cta">' + esc(t("partners.visit", "Bekijk website")) +
+            '<span class="partner-ico" aria-hidden="true">' + PARTNER_ARROW + '</span></span>'
+          : '') +
+      '</span>';
+
+    /* noopener/noreferrer: the target page must never get a handle on this
+       window, and these are third-party sites we do not control. */
+    return linked
+      ? '<a class="partner-card reveal" href="' + esc(url) + '" target="_blank" rel="noopener noreferrer">' + inner + '</a>'
+      : '<div class="partner-card reveal is-static">' + inner + '</div>';
+  }
+
+  function renderPartners() {
+    var host = $("#partner-grid");
+    var section = $("#partners");
+    if (!host || !section) return;
+    var list = window.HB_PARTNERS || [];
+    section.hidden = !list.length;
+    if (!list.length) {
+      host.innerHTML = "";
+      return;
+    }
+    host.innerHTML = list.map(partnerCard).join("");
+    observeNew(host);
+  }
+
   /* ---------- review submission dialog ---------- */
   function initReviewForm() {
     var openBtn = $("#rv-open"), modal = $("#rv-modal"), form = $("#rv-form");
@@ -633,6 +677,7 @@
   function renderDynamic() {
     renderServices();
     renderReviews();
+    renderPartners();
     renderPortfolio();
     renderProjectsList();
     renderSingleProject();

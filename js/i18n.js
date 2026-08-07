@@ -127,6 +127,13 @@ window.HB_EN = {
   /* Individual reviews (text + type of work, both languages) now live in
      data/reviews.json and are moderated in the admin panel — not here. */
 
+  /* Partners */
+  "partners.eyebrow": "Partners",
+  "partners.title": "Our partners",
+  "partners.sub": "The specialists and suppliers we work with to bring every project to a good finish.",
+  "partners.visit": "Visit website",
+  /* Partner names and descriptions live in data/partners.json — not here. */
+
   /* Review form */
   "rv.open": "Write a review",
   "rv.eyebrow": "Review",

@@ -6,6 +6,7 @@
 
      window.HB_PROJECTS  — array, same shape main.js always expected
      window.HB_SERVICES  — array, new; drives the "Onze diensten" list
+     window.HB_PARTNERS  — array; drives the partner cards below the reviews
      window.HB_DATA_READY — promise main.js awaits before its first render
 
    The promise never rejects: if a file is missing or malformed the site
@@ -17,6 +18,7 @@
   window.HB_PROJECTS = [];
   window.HB_SERVICES = [];
   window.HB_REVIEWS  = [];
+  window.HB_PARTNERS = [];
 
   /* Pages sit at the site root, so a relative path works for all of them.
      Cache-busted per deploy-day so editors see their changes without a
@@ -36,10 +38,12 @@
       });
   }
 
-  window.HB_DATA_READY = Promise.all([load("projects"), load("services"), load("reviews")])
-    .then(function (res) {
-      window.HB_PROJECTS = res[0];
-      window.HB_SERVICES = res[1];
-      window.HB_REVIEWS  = res[2];
-    });
+  window.HB_DATA_READY = Promise.all([
+    load("projects"), load("services"), load("reviews"), load("partners")
+  ]).then(function (res) {
+    window.HB_PROJECTS = res[0];
+    window.HB_SERVICES = res[1];
+    window.HB_REVIEWS  = res[2];
+    window.HB_PARTNERS = res[3];
+  });
 })();
